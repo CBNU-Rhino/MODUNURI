@@ -26,7 +26,6 @@ import java.util.List;
 public class TouristApiService {
 
     private static final Logger logger = LoggerFactory.getLogger(TouristApiService.class);
-
     private final RestTemplate restTemplate;
     private final TouristInfoRepository touristInfoRepository;
     private final AccessibleInfoRepository accessibleInfoRepository;

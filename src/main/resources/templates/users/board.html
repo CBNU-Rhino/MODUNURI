@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Board</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* 로고 중복 문제 해결을 위해 추가된 스타일 */
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        /* 게시물이 적어도 미들라인을 확장 */
+        .board-section {
+            min-height: 700px; /* 최소 높이 설정으로 푸터가 너무 올라오는 문제 해결 */
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative; /* 절대 위치를 설정할 수 있도록 함 */
+        }
+
+        /* New Post 버튼을 우하단에 고정 */
+        .new-post-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- Header Section -->
+<header class="navbar">
+    <div class="logo">
+        <a href="#">
+            <img src="/images/test.png">
+            <span style="color: #89B873; font-size: 24px; font-weight: 900;">MODUNURI</span>
+        </a>
+    </div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Travel Tips</a></li>
+            <li><a href="#" class="active">Community</a></li>
+            <li><a href="#">Support Center</a></li>
+            <!-- 로그인 상태 확인 -->
+            <li class="nav-item-right">
+                <span th:if="${username != null}">
+                    <a href="/users/mypage" class="my-page-button">My Page</a>
+                    <a th:text="${username} + '님 안녕하세요'"></a>
+                    <a href="/users/logout" class="sign-out-button">Logout</a>
+                </span>
+                <a th:if="${username == null}" href="users/signup" class="sign-in-button">Sign In</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main Content Section -->
+<main style="margin-top: 100px;"> <!-- 상단 Navbar에 의해 가려지는 문제 해결 -->
+    <section class="board-section">
+        <h1 style="text-align: center; padding: 20px 0; color: #656565;">Community Board</h1>
+        <div class="post-list">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                <thead>
+                <tr style="background-color: #B4D5A8; color: white;">
+                    <th style="padding: 10px; text-align: left;">ID</th>
+                    <th style="padding: 10px; text-align: left;">Title</th>
+                    <th style="padding: 10px; text-align: left;">Author</th>
+                    <th style="padding: 10px; text-align: left;">Date</th>
+                    <th style="padding: 10px; text-align: left;">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 예시 게시물 목록 -->
+                <tr style="background-color: #ffffff; color: #656565;">
+                    <td style="padding: 10px;">1</td>
+                    <td style="padding: 10px;"><a href="/board/post/1" style="color: #89B873; text-decoration: none;">First Post</a></td>
+                    <td style="padding: 10px;">Admin</td>
+                    <td style="padding: 10px;">2024-09-01</td>
+                    <td style="padding: 10px;">
+                        <a href="/board/edit/1" style="color: #4CAF4F; text-decoration: none;">Edit</a> |
+                        <a href="/board/delete/1" style="color: #d9534f; text-decoration: none;">Delete</a>
+                    </td>
+                </tr>
+                <!-- 추가 게시물 -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- New Post 버튼을 우하단 구석에 배치 -->
+        <div class="new-post-button">
+            <a href="/board/new" class="button" style="background-color: #89B873; color: white; padding: 10px 20px;">Create New Post</a>
+        </div>
+    </section>
+</main>
+
+<!-- Footer Section -->
+<footer class="footer">
+    <div class="footer-links">
+        <ul>
+            <li><a href="#">Find a Store</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Use</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script src="/static/script/script.js"></script>
+</body>
+</html>
