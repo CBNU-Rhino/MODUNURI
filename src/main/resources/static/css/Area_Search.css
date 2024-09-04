@@ -1,0 +1,311 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #EDF4E1;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: #E6F2D9;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #D0D8C0;
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.navbar .logo span {
+    font-size: 24px;
+    color: #6C7A40;
+    font-weight: bold;
+}
+
+.navbar .search-container {
+    flex-grow: 1;
+    margin-left: 20px;
+    margin-right: 20px;
+    position: relative;
+}
+
+.navbar .search-container input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid #BCC7A3;
+    border-radius: 20px;
+    background-color: #F3F8E6;
+    font-size: 16px;
+    color: #6C7A40;
+    outline: none;
+}
+
+.navbar .search-container input::placeholder {
+    color: #A0A98C;
+}
+
+.navbar .search-container button {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.navbar .search-container button img {
+    width: 20px;
+    height: 20px;
+    filter: invert(36%) sepia(6%) saturate(1999%) hue-rotate(69deg) brightness(93%) contrast(89%);
+}
+
+.navbar .menu {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .menu a {
+    color: #6C7A40;
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.navbar .menu a:hover {
+    color: #4C5A30;
+}
+
+.navbar .login-btn {
+    background-color: #A3AE79;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+.navbar .login-btn:hover {
+    background-color: #8F9D65;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 50px auto;
+    background-color: #E6F2D9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #D0D8C0;
+}
+
+.header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #6C7A40;
+    margin-bottom: 30px;
+}
+
+.filter-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.filter-section > div {
+    flex-grow: 1;
+    margin-right: 20px;
+}
+
+.filter-section > div:last-child {
+    margin-right: 0;
+}
+
+.search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 2px solid #BCC7A3;
+    border-radius: 8px;
+    background-color: #F3F8E6;
+    padding: 12px;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    outline: none;
+    color: #6C7A40;
+}
+
+.search-bar button {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.search-bar button img {
+    width: 20px;
+    height: 20px;
+    filter: invert(36%) sepia(6%) saturate(1999%) hue-rotate(69deg) brightness(93%) contrast(89%);
+}
+
+.location-filters {
+    display: flex;
+    justify-content: space-between;
+}
+
+.location-filters select {
+    width: 30%;
+    padding: 12px;
+    border: 2px solid #BCC7A3;
+    border-radius: 8px;
+    background-color: #F3F8E6;
+    font-size: 16px;
+    color: #6C7A40;
+    appearance: none;
+}
+
+.checkbox-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.checkbox-container label {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    font-size: 25px;
+    color: #6C7A40;
+}
+
+.checkbox-container label input {
+    margin-right: 10px;
+}
+
+.selected-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 2px solid #D0D8C0;
+    color: #6C7A40;
+}
+
+.selected-area button {
+    background-color: #C8D5A6;
+    border: 2px solid #A3AE79;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    color: #4C5A30;
+    font-size: 16px;
+}
+
+.selected-area button:hover {
+    background-color: #B8C793;
+}
+
+.dropdown {
+    margin-bottom: 20px;
+}
+
+.dropdown select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #BCC7A3;
+    border-radius: 8px;
+    background-color: #F3F8E6;
+    font-size: 16px;
+    color: #6C7A40;
+}
+
+.gallery {
+    display: none; /* 초기에는 숨김 처리 */
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 가로로 3개 */
+    grid-gap: 20px;
+}
+
+.gallery-item {
+    background-color: #F3F8E6;
+    border: 2px solid #BCC7A3;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    color: #6C7A40;
+    font-size: 18px;
+}
+
+.gallery-item img {
+    max-width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.gallery-item p {
+    font-weight: bold;
+    margin: 0;
+    color: #6C7A40;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.page-arrow,
+.page-number {
+    width: 50px; /* img와 page-number의 너비를 동일하게 설정 */
+    height: 50px; /* img와 page-number의 높이를 동일하게 설정 */
+    display: flex; /* 중앙 정렬을 위한 flex 설정 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    background-color: #F3F8E6; /* 페이지 번호 배경색 */
+    border: 2px solid #BCC7A3; /* 경계선 설정 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    margin: 0 5px;
+    color: #6C7A40;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.page-number:hover,
+.page-arrow:hover {
+    background-color: #E6F2D9; /* 마우스 오버 시 배경색 변경 */
+}
+
+.page-number.active {
+    background-color: #A3AE79;
+    color: white;
+}
+

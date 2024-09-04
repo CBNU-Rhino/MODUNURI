@@ -9,7 +9,7 @@ spring:
     url: jdbc:mysql://localhost:3306/app?serverTimezone=UTC&characterEncoding=utf8
 
     username: root
-    password: 1234
+    password: skyu5213
   jpa:
     hibernate:
       ddl-auto: update
