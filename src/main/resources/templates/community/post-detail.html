@@ -167,7 +167,6 @@
             <span>작성일: <strong id="postCreatedAt">Date</strong></span>
         </div>
 
-
         <!-- Post Content -->
         <div class="post-content" th:text="${post.content}">
             Loading content...
@@ -180,8 +179,6 @@
         <input type="hidden" id="postId" th:value="${postId}">
         <input type="hidden" id="currentUser" th:value="${currentUsername}">
         <input type="hidden" id="currentUserId" th:value="${currentUserId}">
-
-
 
         <!-- Button Group -->
         <div class="button-group">
@@ -204,19 +201,7 @@
             </div>
 
             <!-- Comment List -->
-            <div class="comment-list">
-                <div class="comment-item">
-                    <div class="comment-author">홍길동</div>
-                    <div class="comment-content">좋은 글 감사합니다!</div>
-                    <div class="comment-meta">2024-09-04 12:00 | 좋아요 3</div>
-                </div>
-
-                <div class="comment-item">
-                    <div class="comment-author">김철수</div>
-                    <div class="comment-content">유용한 정보네요!</div>
-                    <div class="comment-meta">2024-09-04 13:45 | 좋아요 5</div>
-                </div>
-            </div>
+            <div class="comment-list"></div>
         </div>
     </section>
 </main>
@@ -253,17 +238,26 @@
                 .then(response => response.json())
                 .then(data => {
                     commentList.innerHTML = ''; // 기존 댓글 목록 비우기
+                    const currentUserId = currentUserIdElement.value; // 현재 로그인한 사용자 ID
+
                     data.forEach(comment => {
                         const formattedDate = formatDateTime(comment.createdAt);
+                        let deleteButtonHTML = '';
+
+                        // 댓글 작성자와 현재 로그인한 사용자가 같으면 삭제 버튼을 추가
+                        if (comment.userId === currentUserId) {
+                            deleteButtonHTML = `<button class="delete-comment-button" data-comment-id="${comment.id}">삭제</button>`;
+                        }
+
                         const commentItem = `
-                        <div class="comment-item" data-comment-id="${comment.id}">
-                            <div class="comment-author">${comment.author}</div>
-                            <div class="comment-content">${comment.content}</div>
-                            <div class="comment-meta">${formattedDate}
-                                <button class="delete-comment-button" data-comment-id="${comment.id}">삭제</button>
+                            <div class="comment-item" data-comment-id="${comment.id}">
+                                <div class="comment-author">${comment.author}</div>
+                                <div class="comment-content">${comment.content}</div>
+                                <div class="comment-meta">${formattedDate}
+                                    ${deleteButtonHTML} <!-- 삭제 버튼을 조건부로 추가 -->
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
                         commentList.insertAdjacentHTML('beforeend', commentItem);
                     });
 
@@ -321,26 +315,6 @@
         } else {
             console.error('Post ID를 불러오지 못했습니다.');
         }
-        // 포스트 작성일 데이터를 불러와서 포맷팅
-        function loadPostDetails(postId) {
-            fetch(`/api/posts/${postId}`)
-                .then(response => response.json())
-                .then(data => {
-                    const formattedDate = formatDateTime(data.createdAt);
-                    postCreatedAtElement.textContent = formattedDate; // 작성일 표시를 포맷된 날짜로 업데이트
-                })
-                .catch(error => {
-                    console.error('포스트를 불러오는 중 오류가 발생했습니다:', error);
-                });
-        }
-
-        // 댓글 조회 호출
-        if (postId) {
-            loadComments(postId);  // postId가 정상적으로 불러와진 경우에만 실행
-            loadPostDetails(postId);  // 포스트 상세 정보 호출
-        } else {
-            console.error('Post ID를 불러오지 못했습니다.');
-        }
 
         // 댓글 작성 기능
         const commentButton = document.querySelector('.comment-button');
@@ -377,15 +351,33 @@
                 })
                 .then(data => {
                     const formattedDate = formatDateTime(data.createdAt);
+                    let deleteButtonHTML = '';
+
+                    // 댓글 작성자와 현재 로그인한 사용자가 같으면 삭제 버튼을 추가
+                    if (data.userId === currentUserIdElement.value) {
+                        deleteButtonHTML = `<button class="delete-comment-button" data-comment-id="${data.id}">삭제</button>`;
+                    }
+
                     const newComment = `
-                    <div class="comment-item">
-                        <div class="comment-author">${data.author}</div>
-                        <div class="comment-content">${data.content}</div>
-                        <div class="comment-meta">${formattedDate}</div>
-                    </div>
-                `;
+                        <div class="comment-item" data-comment-id="${data.id}">
+                            <div class="comment-author">${data.author}</div>
+                            <div class="comment-content">${data.content}</div>
+                            <div class="comment-meta">${formattedDate}
+                                ${deleteButtonHTML} <!-- 삭제 버튼을 조건부로 추가 -->
+                            </div>
+                        </div>
+                    `;
                     commentList.insertAdjacentHTML('beforeend', newComment);
                     commentInput.value = ''; // 입력 필드 비우기
+
+                    // 새로 추가된 댓글의 삭제 버튼에 이벤트 리스너 추가
+                    const deleteButton = document.querySelector(`.delete-comment-button[data-comment-id="${data.id}"]`);
+                    if (deleteButton) {
+                        deleteButton.addEventListener('click', function() {
+                            const commentId = this.getAttribute('data-comment-id');
+                            deleteComment(commentId);
+                        });
+                    }
                 })
                 .catch(error => {
                     console.error('Error adding comment:', error);
