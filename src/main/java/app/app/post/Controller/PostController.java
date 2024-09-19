@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,24 +20,33 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/api/posts")
 public class PostController {
 
     private final PostService postService;
-    UserService userService;
+    private final UserService userService;
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostService postService, UserService userService) {
         this.postService = postService;
+        this.userService = userService;
     }
 
     // 모든 게시물 가져오기
     @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts() {
-        List<Post> posts = postService.getAllPosts();
+    public ResponseEntity<List<Post>> getAllPosts(@RequestParam(value = "search", required = false) String searchTerm) {
+        System.out.println("검색어: '" + searchTerm + "'"); // 검색어가 null인지 빈 문자열인지 확인
+        List<Post> posts;
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            posts = postService.searchPostsByTitle(searchTerm);
+        } else {
+            posts = postService.getAllPosts();
+        }
         return ResponseEntity.ok(posts);
     }
+
+
 
     // ID로 특정 게시물 가져오기
     @GetMapping("/{id}")
@@ -47,7 +55,6 @@ public class PostController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
 
     // 게시물 생성하기
     @PostMapping
@@ -66,15 +73,13 @@ public class PostController {
         Post createdPost = postService.createPost(post);
         return ResponseEntity.ok(createdPost);
     }
-    //게시물 수정하기
+
+    // 게시물 수정하기
     @PutMapping("/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post postDetails, Authentication authentication) {
         // 인증된 사용자로부터 CustomUserDetails 가져오기
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
-            // 사용자의 실제 username (realUsername) 또는 원하는 필드를 설정
-            String currentUsername = userDetails.getRealUsername(); // CustomUserDetails에서 실제 사용자 이름 추출
 
             // 기존 게시물 정보 불러오기
             Post existingPost = postService.getPostById(id)
@@ -86,20 +91,17 @@ public class PostController {
             existingPost.setUpdatedAt(LocalDateTime.now());
 
             // author를 자동으로 설정 (로그인된 사용자 이름으로 설정)
-            existingPost.setAuthor(currentUsername);
+            existingPost.setAuthor(userDetails.getRealUsername());
 
             // 게시물 업데이트 및 저장
             Post updatedPost = postService.save(existingPost);
 
-            // 업데이트된 게시물을 응답으로 반환
             return ResponseEntity.ok(updatedPost);
         } else {
-            // 인증 정보가 없거나 올바르지 않으면 오류 반환
+            // 인증 정보가 없으면 오류 반환
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-
-
 
     // 게시물 삭제하기
     @DeleteMapping("/{id}")
@@ -108,21 +110,7 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
-    // 현재 로그인한 사용자의 이름을 가져오는 유틸리티 메서드
-    private String getCurrentUsername() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        // CustomUserDetails가 principal인 경우 실제 username을 반환
-        if (principal instanceof CustomUserDetails) {
-            return ((CustomUserDetails) principal).getRealUsername(); // 실제 username 반환
-        } else if (principal instanceof UserDetails) {
-            // 일반적인 UserDetails인 경우 기본 username 반환 (이 경우 userId일 가능성이 있음)
-            return ((UserDetails) principal).getUsername();
-        } else {
-            // 그 외의 경우 principal의 toString() 값을 반환
-            return principal.toString();
-        }
-    }
+    // 게시물 상세 정보 가져오기
     @GetMapping("/post/{id}")
     public String getPostDetail(@PathVariable Long id, Model model, Principal principal) {
         // 로그인한 사용자의 정보를 가져옴
@@ -135,5 +123,4 @@ public class PostController {
         model.addAttribute("post", post);
         return "post-detail"; // Thymeleaf 템플릿
     }
-
 }

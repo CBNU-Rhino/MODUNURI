@@ -95,6 +95,35 @@
         .new-post-button a:hover {
             background-color: #45a049;
         }
+
+        /* 검색창 스타일 */
+        .search-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 300px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .search-button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -123,6 +152,16 @@
 <main style="margin-top: 100px;">
     <section class="board-section">
         <h1>Community Board</h1>
+
+        <!-- 검색창 -->
+        <div class="search-container">
+            <form action="/community" method="GET">
+                <input type="text" id="searchInput" class="search-input" name="search" placeholder="Search posts..." th:value="${searchTerm != null ? searchTerm : ''}">
+                <button type="submit" id="searchButton" class="search-button">Search</button>
+            </form>
+        </div>
+
+
         <div class="post-list">
             <table>
                 <thead>
@@ -146,6 +185,7 @@
     </section>
 </main>
 
+
 <!-- 서버에서 전달한 currentUserId를 숨겨서 HTML에서 사용 가능하게 함 -->
 <input type="hidden" id="currentUserId" th:value="${currentUserId}" />
 
@@ -160,36 +200,66 @@
         });
 
         // 서버에서 게시물 목록 가져오기
-        fetch('/api/posts')
-            .then(response => response.json())
-            .then(posts => {
-                const postList = document.getElementById('post-list');
-                postList.innerHTML = ''; // 기존 목록 초기화
+        fetchPosts();
 
-                if (posts.length === 0) {
-                    const emptyRow = document.createElement('tr');
-                    emptyRow.innerHTML = `<td colspan="4" style="text-align: center;">No posts available</td>`;
-                    postList.appendChild(emptyRow);
-                } else {
-                    posts.forEach(post => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${post.id}</td>
-                            <td><a href="/board/post/${post.id}/detail">${post.title}</a></td>
-                            <td>${post.author}</td>
-                            <td class="date">${new Date(post.createdAt).toLocaleDateString()}</td>
-                        `;
-                        postList.appendChild(row);
-                    });
+        function fetchPosts(searchTerm = '') {
+            console.log("Searching for:", searchTerm); // 검색어 확인 로그
+            fetch(`/api/posts?search=${encodeURIComponent(searchTerm)}`)
+                .then(response => response.json())
+                .then(posts => {
+                    const postList = document.getElementById('post-list');
+                    postList.innerHTML = ''; // 기존 목록 초기화
+
+                    if (posts.length === 0) {
+                        const emptyRow = document.createElement('tr');
+                        emptyRow.innerHTML = `<td colspan="4" style="text-align: center;">No posts available</td>`;
+                        postList.appendChild(emptyRow);
+                    } else {
+                        posts.forEach(post => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                        <td>${post.id}</td>
+                        <td><a href="/board/post/${post.id}/detail">${post.title}</a></td>
+                        <td>${post.author}</td>
+                        <td class="date">${new Date(post.createdAt).toLocaleDateString()}</td>
+                    `;
+                            postList.appendChild(row);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching posts:', error);
+                    const postList = document.getElementById('post-list');
+                    const errorRow = document.createElement('tr');
+                    errorRow.innerHTML = `<td colspan="4" style="text-align: center; color: red;">Failed to load posts</td>`;
+                    postList.appendChild(errorRow);
+                });
+        }
+
+
+        const searchButton = document.getElementById('searchButton');
+        const searchInput = document.getElementById('searchInput');
+
+        searchButton.addEventListener('click', function(event) {
+            event.preventDefault(); // 기본 폼 제출을 막음
+            const searchTerm = searchInput.value.trim();
+            console.log("Search term:", searchTerm); // 검색어 로그 확인
+            if (searchTerm) {
+                fetchPosts(searchTerm); // 검색어가 있는 경우 그 검색어로 게시물 조회
+            }
+        });
+
+        searchInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // 기본 폼 제출을 막음
+                const searchTerm = searchInput.value.trim();
+                console.log("Search term (Enter):", searchTerm); // 검색어 로그 확인
+                if (searchTerm) {
+                    fetchPosts(searchTerm);
                 }
-            })
-            .catch(error => {
-                console.error('Error fetching posts:', error);
-                const postList = document.getElementById('post-list');
-                const errorRow = document.createElement('tr');
-                errorRow.innerHTML = `<td colspan="4" style="text-align: center; color: red;">Failed to load posts</td>`;
-                postList.appendChild(errorRow);
-            });
+            }
+        });
+
     });
 </script>
 

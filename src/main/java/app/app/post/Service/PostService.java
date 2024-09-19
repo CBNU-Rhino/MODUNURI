@@ -63,4 +63,8 @@ public class PostService {
         return postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("No post found with id: " + id));
     }
+    // 제목에 검색어가 포함된 게시물을 반환하는 메서드
+    public List<Post> searchPostsByTitle(String searchTerm) {
+        return postRepository.findByTitleContainingIgnoreCase(searchTerm);
+    }
 }
