@@ -384,6 +384,51 @@
                     alert('댓글 작성 중 오류가 발생했습니다.');
                 });
         });
+
+        // 게시물 삭제 및 수정 기능 추가
+        document.querySelectorAll('.delete-button').forEach(function(deleteButton) {
+            deleteButton.addEventListener('click', function(event) {
+                event.preventDefault(); // 기본 동작 막기
+                const postId = this.getAttribute('data-post-id'); // data-post-id 속성에서 실제 postId를 가져옴
+
+                // 사용자 확인
+                if (confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
+                    fetch(`/api/posts/${postId}`, {  // API 요청을 '/api/posts/POST_ID'로 보냄
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                alert("게시물이 삭제되었습니다.");
+                                window.location.href = "/community"; // 삭제 후 목록 페이지로 이동
+                            } else if (response.status === 403) {
+                                alert("게시물 삭제 권한이 없습니다.");
+                            } else {
+                                alert("게시물 삭제에 실패했습니다.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error deleting post:", error);
+                            alert("게시물 삭제 중 오류가 발생했습니다.");
+                        });
+                }
+            });
+        });
+
+        const editButton = document.getElementById('edit-button');
+
+        if (editButton) {
+            editButton.addEventListener('click', function (event) {
+                event.preventDefault();
+                const postId = editButton.getAttribute('data-post-id'); // post ID 가져오기
+                if (postId) {
+                    // new-post.html 페이지로 이동 (수정용)
+                    window.location.href = '/board/post/' + postId + '/edit';
+                }
+            });
+        }
     });
 
 </script>
