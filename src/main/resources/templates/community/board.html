@@ -204,11 +204,28 @@
 <!-- JavaScript -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Create New Post 버튼 클릭 시 게시물 작성 페이지로 이동
+        // Create New Post 버튼 클릭 시 로그인 여부 확인 후 게시물 작성 페이지로 이동
         const newPostLink = document.getElementById('newPostLink');
+
         newPostLink.addEventListener('click', function(event) {
             event.preventDefault();
-            window.location.href = '/board/new'; // 게시물 작성 페이지로 이동
+
+            // AJAX 요청으로 로그인 상태 확인
+            fetch('/users/checkLogin')
+                .then(response => response.json())
+                .then(isLoggedIn => {
+                    if (isLoggedIn) {
+                        // 로그인된 상태라면 게시물 작성 페이지로 이동
+                        window.location.href = '/board/new';
+                    } else {
+                        // 로그인되지 않은 상태라면 로그인 페이지로 이동
+                        alert('로그인이 필요합니다.');
+                        window.location.href = '/users/login';
+                    }
+                })
+                .catch(error => {
+                    console.error('로그인 상태 확인 중 오류가 발생했습니다:', error);
+                });
         });
 
         // 서버에서 게시물 목록 가져오기

@@ -207,5 +207,14 @@ public class userController {
         }
     }
 
+    @GetMapping("/checkLogin")
+    public ResponseEntity<Boolean> checkLoginStatus(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            return ResponseEntity.ok(true);  // 로그인되어 있으면 true 반환
+        } else {
+            return ResponseEntity.ok(false); // 로그인되지 않았으면 false 반환
+        }
+    }
+
 
 }

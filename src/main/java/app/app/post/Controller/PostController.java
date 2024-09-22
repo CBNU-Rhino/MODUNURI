@@ -8,6 +8,7 @@ import app.app.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -58,6 +59,8 @@ public class PostController {
 
 
     // 게시물 생성하기
+    // 게시물 생성하기 (로그인 필요)
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         // 현재 로그인한 사용자의 ID와 이름을 가져와서 author와 userId 필드에 설정
@@ -76,6 +79,8 @@ public class PostController {
     }
 
     // 게시물 수정하기
+    // 게시물 수정하기 (로그인 필요)
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post postDetails, Authentication authentication) {
         // 인증된 사용자로부터 CustomUserDetails 가져오기
@@ -105,6 +110,8 @@ public class PostController {
     }
 
     // 게시물 삭제하기
+    // 게시물 삭제하기 (로그인 필요)
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         postService.deletePost(id);

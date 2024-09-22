@@ -164,7 +164,7 @@
         <!-- Post Metadata (Author, Date, 조회수 등) -->
         <div class="post-meta">
             <span>작성자: <strong th:text="${post.author}">Author</strong></span>
-            <span>작성일: <strong id="postCreatedAt">Date</strong></span>
+            <span>작성일: <strong id="postCreatedAt" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">Date</strong></span>
         </div>
 
         <!-- Post Content -->
@@ -321,44 +321,55 @@
         const commentInput = document.querySelector('.comment-input');
 
         commentButton.addEventListener('click', function() {
-            const content = commentInput.value.trim();
-
-            if (!content) {
-                alert('댓글 내용을 입력하세요.');
-                return;
-            }
-            const currentUsername = currentUsernameElement.value;
-            const currentUserId = currentUserIdElement.value;
-
-            // JSON 형식으로 댓글 데이터 전송
-            fetch('/api/comments', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    postId: Number(postId),
-                    content: content,
-                    author: currentUsername,
-                    userId: currentUserId
-                })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('댓글 작성 실패');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const formattedDate = formatDateTime(data.createdAt);
-                    let deleteButtonHTML = '';
-
-                    // 댓글 작성자와 현재 로그인한 사용자가 같으면 삭제 버튼을 추가
-                    if (data.userId === currentUserIdElement.value) {
-                        deleteButtonHTML = `<button class="delete-comment-button" data-comment-id="${data.id}">삭제</button>`;
+            // AJAX 요청으로 로그인 상태 확인
+            fetch('/users/checkLogin')
+                .then(response => response.json())
+                .then(isLoggedIn => {
+                    if (!isLoggedIn) {
+                        alert('로그인이 필요합니다.');
+                        window.location.href = '/users/login';
+                        return; // 로그인하지 않은 경우 댓글 작성 중단
                     }
 
-                    const newComment = `
+                    // 로그인 상태 확인 후 댓글 작성
+                    const content = commentInput.value.trim();
+
+                    if (!content) {
+                        alert('댓글 내용을 입력하세요.');
+                        return;
+                    }
+                    const currentUsername = currentUsernameElement.value;
+                    const currentUserId = currentUserIdElement.value;
+
+                    // JSON 형식으로 댓글 데이터 전송
+                    fetch('/api/comments', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            postId: Number(postId),
+                            content: content,
+                            author: currentUsername,
+                            userId: currentUserId
+                        })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('댓글 작성 실패');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            const formattedDate = formatDateTime(data.createdAt);
+                            let deleteButtonHTML = '';
+
+                            // 댓글 작성자와 현재 로그인한 사용자가 같으면 삭제 버튼을 추가
+                            if (data.userId === currentUserIdElement.value) {
+                                deleteButtonHTML = `<button class="delete-comment-button" data-comment-id="${data.id}">삭제</button>`;
+                            }
+
+                            const newComment = `
                         <div class="comment-item" data-comment-id="${data.id}">
                             <div class="comment-author">${data.author}</div>
                             <div class="comment-content">${data.content}</div>
@@ -367,21 +378,25 @@
                             </div>
                         </div>
                     `;
-                    commentList.insertAdjacentHTML('beforeend', newComment);
-                    commentInput.value = ''; // 입력 필드 비우기
+                            commentList.insertAdjacentHTML('beforeend', newComment);
+                            commentInput.value = ''; // 입력 필드 비우기
 
-                    // 새로 추가된 댓글의 삭제 버튼에 이벤트 리스너 추가
-                    const deleteButton = document.querySelector(`.delete-comment-button[data-comment-id="${data.id}"]`);
-                    if (deleteButton) {
-                        deleteButton.addEventListener('click', function() {
-                            const commentId = this.getAttribute('data-comment-id');
-                            deleteComment(commentId);
+                            // 새로 추가된 댓글의 삭제 버튼에 이벤트 리스너 추가
+                            const deleteButton = document.querySelector(`.delete-comment-button[data-comment-id="${data.id}"]`);
+                            if (deleteButton) {
+                                deleteButton.addEventListener('click', function() {
+                                    const commentId = this.getAttribute('data-comment-id');
+                                    deleteComment(commentId);
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error adding comment:', error);
+                            alert('댓글 작성 중 오류가 발생했습니다.');
                         });
-                    }
                 })
                 .catch(error => {
-                    console.error('Error adding comment:', error);
-                    alert('댓글 작성 중 오류가 발생했습니다.');
+                    console.error('로그인 상태 확인 중 오류가 발생했습니다:', error);
                 });
         });
 
