@@ -26,7 +26,9 @@ public class BoardPageController {
         // 로그인한 사용자의 정보를 가져옵니다.
         if (customUserDetails != null) {
             String currentUserId = customUserDetails.getUsername();  // 로그인한 사용자의 ID 가져오기
+            String currentUsername = customUserDetails.getRealUsername();  // 로그인한 사용자의 ID 가져오기
             model.addAttribute("currentUserId", currentUserId);
+            model.addAttribute("currentUsername", currentUsername);
         } else {
             model.addAttribute("currentUserId", null); // 로그인하지 않았을 때 처리
         }
