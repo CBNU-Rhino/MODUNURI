@@ -5,6 +5,7 @@ import app.app.post.Service.PostService;
 import app.app.user.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,16 +22,18 @@ public class BoardPageController {
 
     // /community 경로로 요청이 들어오면 board.html 반환
     @GetMapping("/community")
-    public String getCommunityPage(Model model) {
-        // 현재 로그인한 사용자 정보 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserId = authentication.getName(); // 로그인한 사용자의 ID 가져오기
-
-        // 모델에 currentUserId 추가
-        model.addAttribute("currentUserId", currentUserId);
+    public String getCommunityPage(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
+        // 로그인한 사용자의 정보를 가져옵니다.
+        if (customUserDetails != null) {
+            String currentUserId = customUserDetails.getUsername();  // 로그인한 사용자의 ID 가져오기
+            model.addAttribute("currentUserId", currentUserId);
+        } else {
+            model.addAttribute("currentUserId", null); // 로그인하지 않았을 때 처리
+        }
 
         return "community/board";  // src/main/resources/templates/community/board.html 파일 반환
     }
+
 
     // /board/new 경로로 요청이 들어오면 new-post.html 반환
     @GetMapping("/board/new")

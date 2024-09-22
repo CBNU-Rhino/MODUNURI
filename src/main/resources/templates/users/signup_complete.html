@@ -1,52 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up Complete</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
 
-        .btn-main {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        .btn-main:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
 <body>
-<h1>회원가입이 완료되었습니다!</h1>
-<p>계속하려면 아래 버튼을 클릭하세요.</p>
-<a href="/" class="btn-main">메인으로 돌아가기</a>
+
+<div class="back-container">
+    <div class="content-container">
+        <div class="login-container">
+            <h1>회원가입이 완료되었습니다!</h1>
+            <p>계속하려면 아래 버튼을 클릭하세요.</p>
+            <a href="/" class="login-button">메인으로 돌아가기</a>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- Footer Section -->
 <footer class="footer">
     <div class="footer-links">
         <ul>
-            <li><a href="#">Find a Store</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Use</a></li>
+            <li><p>&copy; 2024 MODUNURI</p></li>
+
         </ul>
     </div>
 </footer>
+
 <script src="/static/script/script.js"></script>
 </body>
 </html>

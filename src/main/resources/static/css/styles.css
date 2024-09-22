@@ -1,11 +1,18 @@
 /* styles.css */
 
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard.woff') format('woff');
+    font-weight: 100 900;
+    font-style: normal;
+}
+
 html, body {
     height: 100%;
     margin: 0;
-    font-family: pretendard;
-    color: #1d1d1f;
-    background-color: #EFFFE9;
+    font-family: 'Pretendard', sans-serif;
+    color: #717171;
+    background-color: #F5FFF5;
 }
 
 /* Navbar */
@@ -13,7 +20,7 @@ html, body {
     display: flex;
     justify-content: space-between; /* 버튼을 오른쪽에 고정하기 위해 사용 */
     align-items: center;
-    background-color: #EFFFE9;
+    background-color: #F5FFF5;
     padding: 10px 20px;
     position: fixed;
     width: 100%;
@@ -72,31 +79,6 @@ html, body {
     margin-right: 15px; /* 로그인 메시지와 회원가입 버튼 사이 간격 */
 }
 
-.search-container {
-    display: flex;
-    align-items: center;
-    background-color: rgba(148, 205, 147, 0.25);
-    border-radius: 30px;
-    padding: 5px 15px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-    width: 300px; /* 가로 길이를 300px로 설정 */
-    margin-right: 3px; /* nav-links와의 간격을 줄임 */
-    margin-left: 3px; /* 로고와의 간격을 조금 줄임 */
-}
-
-.search-input {
-    padding: 10px 10px;
-    border: none;
-    border-radius: 30px;
-    outline: none;
-    font-size: 16px;
-    color: #717171;
-    width: 270px; /* 입력 필드의 너비를 컨테이너에 맞게 조정 */
-    background: transparent;
-}
-
-
 .nav-item {
     color: #fff;
     text-decoration: none;
@@ -113,117 +95,234 @@ html, body {
 /* 공통 버튼 스타일 */
 .auth-button {
     padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: rgba(148, 205, 147, 0.25);
+    color: #4CAF50 !important;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 10px;
     display: inline-block;
     text-align: center;
     font-size: 16px;
     width: 100px; /* 동일한 너비 설정 */
     box-sizing: border-box;
-    margin-left: 10px; /* 버튼 간격 조정 */
+    margin-left: 5px; /* 버튼 간격 조정 */
+    border: 2px solid #4CAF50; /* 초록색 테두리 */
 }
 
 .auth-button:hover {
     background-color: #45a049;
+    color: #F5FFF5 !important;
 }
 
 .nav-item-right {
     margin-left: auto; /* 오른쪽으로 밀어내기 */
 }
 
-.slider {
+/* 비디오 섹션 스타일 */
+.video-container {
     position: relative;
     width: 100%;
+    height: 100vh;
     overflow: hidden;
 }
 
-.slides {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-
-.slide {
-    min-width: 100%;
-    box-sizing: border-box;
-    height: 450px; /* 슬라이드의 높이 설정 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #616161; /* 텍스트 색상 */
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.slide:nth-child(1) {
-    background-color: #ffffff;
-}
-
-.slide:nth-child(2) {
-    background-color: #ffffff;
-}
-
-.slide:nth-child(3) {
-    background-color: #ffffff;
-}
-
-.slide:nth-child(4) {
-    background-color: #ffffff;
-}
-
-.dots-container {
+.fullscreen-video {
     position: absolute;
-    bottom: 20px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: 0; /* 다른 요소들 앞에 보이도록 설정 */
+    opacity: 0.5; /* 투명도를 70%로 설정 */
+}
+
+/* 비디오 위의 텍스트 */
+.video-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #4CAF50; /* 텍스트 색상 설정 */
+    opacity: 0;
+    transition: opacity 2s ease, transform 2s ease; /* 애니메이션 효과 */
+    z-index: 1; /* 다른 요소들 앞에 보이도록 설정 */
+}
+
+.video-text h1 {
+    font-size: 4rem;
+    margin: 0;
+}
+
+.video-text h3 {
+    font-size: 1.8rem;
+    margin-top: 10px;
+}
+
+/* 텍스트가 서서히 나타나는 애니메이션 */
+.video-text.show {
+    opacity: 1; /* 텍스트가 서서히 나타남 */
+    transform: translate(-50%, -50%) scale(1); /* 서서히 원래 크기와 위치로 이동 */
+}
+
+/* 화살표 컨테이너 스타일 */
+.arrow-container {
+    margin-top: 80px;
+    text-align: center; /* 가운데 정렬 */
+    margin-bottom: 60px; /* 아래 여백 추가 */
+}
+
+/* 화살표 아이콘 기본 상태 */
+.arrow-icon {
+    width: 50px;
+    height: auto;
+    transition: opacity 1.5s ease-out, transform 1.5s ease-out; /* 애니메이션 적용 */
+    opacity: 0; /* 처음엔 안 보이도록 설정 */
+    transform: translateY(20px); /* 약간 아래에서 시작 */
+}
+
+/* 화살표 아이콘이 화면에 나타났을 때 */
+.arrow-icon.show {
+    opacity: 1; /* 나타나도록 설정 */
+    transform: translateY(0); /* 제자리로 이동 */
+}
+
+/* 화살표 아이콘 호버 시 효과 */
+.arrow-icon:hover {
+    transform: scale(1.1); /* 화살표 크기 확대 */
+}
+
+/* 새로운 2등분 컨테이너 */
+.split-container {
     display: flex;
-    gap: 10px;
+    justify-content: space-between; /* 좌우로 요소를 배치 */
+    align-items: center; /* 세로 중앙 정렬 */
+    padding: 40px;
+    background-color: #FFFFFF;
+    margin: 20px auto; /* 중앙 정렬 및 여백 추가 */
+    width: 100%; /* 페이지 너비의 80%를 차지 */
+    height: 400px;
+
 }
 
-.dot {
-    width: 12px;
-    height: 12px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    cursor: pointer;
+/* 왼쪽 텍스트 부분 */
+.left-content {
+    flex: 1; /* 너비 비율을 50%로 설정 */
+    padding-right: 20px; /* 오른쪽 이미지와 간격 유지 */
+    transition-delay: 1s; /* 왼쪽에 0.5초 딜레이 */
+    margin-left: 60px;
 }
 
-.dot.active {
-    background-color: #717171;
+.left-content h2 {
+    font-size: 2rem;
+    color: #717171;
+    font-weight: 800; /* Extra Bold */;
+    margin-bottom: 5px; /* h2와 h1 사이의 간격을 줄임 */
+    transition-delay: 1s; /* 왼쪽에 0.5초 딜레이 */
 }
 
-/* Additional Content Styles */
+.left-content h1 {
+    font-size: 2rem;
+    color: #4CAF4F;
+    font-weight: 800; /* Extra Bold */
+    margin-top: 0; /* h1의 상단 여백을 없앰 */
+    transition-delay: 1s; /* 왼쪽에 0.5초 딜레이 */
+}
+
+.left-content p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: #4A4A4A;
+    transition-delay: 1s; /* 왼쪽에 0.5초 딜레이 */
+}
+
+/* 오른쪽 이미지 부분 */
+.right-content {
+    flex: 1; /* 너비 비율을 50%로 설정 */
+    text-align: center;
+    transition-delay: 3s; /* 오른쪽에 1초 딜레이 */
+    margin-right: 50px;
+}
+
+.img-right {
+    width: 90%; /* 이미지가 오른쪽 컨테이너를 가득 채움 */
+    height: auto;
+    border-radius: 10px; /* 부드러운 모서리 */
+    transition-delay: 3s; /* 오른쪽에 1초 딜레이 */
+}
+
+/* 추가적으로 이미지와 텍스트가 너무 붙지 않게 간격 조정 */
+.split-container .left-content, .split-container .right-content {
+    margin: 10px;
+}
+
+/* additional-content 스타일 */
 .additional-content {
     padding: 20px;
-    background-color: #EFFFE9;
-    text-align: left;
-}
-
-.button-container {
-    display: flex;
-    justify-content: space-between; /* 버튼 간 간격을 균등하게 배분 */
-    padding: 20px;
-    height: 250px;
-}
-
-.button {
-    flex: 1; /* 버튼이 가능한 모든 공간을 차지하게 함 */
-    margin: 0 10px; /* 버튼 간의 여백을 설정 */
-    padding: 15px;
-    background-color: #ffffff;
-    color: #656565;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 18px;
-    font-weight: bold;
+    background-color: #F5FFF5;
     text-align: center;
-    transition: background-color 0.3s;
+
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* 애니메이션 효과 */
 }
 
-.button:hover {
-    background-color: #c9c9c9;
+.additional-content h2 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.additional-content p {
+    font-size: 1.5rem;
+    color: #555;
+}
+
+/* 이미지 컨테이너 스타일 */
+.image-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+}
+
+/* 초기 상태: 이미지를 보이지 않게 설정 */
+.image-container a {
+    flex-basis: 30%; /* 각 이미지 크기 */
+    margin: 0 1px; /* 이미지 간의 간격을 줄임 (기존 2px에서 1px으로) */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* 애니메이션 설정 */
+}
+
+/* 스크롤 애니메이션용 스타일 */
+.additional-content, .image-container a, .split-container {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* 이미지 컨테이너 안의 이미지 크기를 조정 */
+.img-item {
+    width: 450px; /* 원하는 너비로 설정 */
+    height: auto; /* 이미지 비율을 유지하면서 높이 자동 설정 */
+    object-fit: cover; /* 이미지가 고정 크기 내에서 잘 맞게 설정 */
+    border-radius: 10px; /* 모서리 둥글게 처리 */
+    opacity: 0; /* 처음엔 안 보이게 설정 */
+    transform: translateY(20px); /* 이미지가 올라오면서 나타나는 애니메이션 효과 */
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.img-item:hover {
+    transform: scale(1.05);
+}
+
+/* 이미지가 보여질 때 */
+.img-item.show {
+    opacity: 1;
+    transform: translateY(0); /* 원래 위치로 돌아옴 */
 }
 
 /* Footer */
@@ -238,6 +337,7 @@ html, body {
     flex: 1; /* 남은 공간을 모두 차지, 콘텐츠가 없을 경우 이 공간이 늘어나 footer가 하단으로 밀려남 */
 }
 
+/* 푸터를 페이지 바닥에 고정하지 않고, 페이지 내용 아래에 배치 */
 .footer {
     background-color: #B4D5A8;
     color: #fff;
@@ -245,6 +345,7 @@ html, body {
     padding: 20px;
     width: 100%;
     box-sizing: border-box;
+    position: relative; /* 푸터가 페이지 하단에 위치 */
 }
 
 .footer-links ul {
@@ -273,7 +374,7 @@ html, body {
     justify-content: center; /* 수직 중앙 정렬 */
     align-items: center; /* 수평 중앙 정렬 */
     min-height: 100vh; /* 최소 높이를 뷰포트 높이로 설정 */
-    background-color: #EFFFE9; /* 배경 색상, 필요에 따라 변경 가능 */
+    background-color: #F5FFF5; /* 배경 색상, 필요에 따라 변경 가능 */
 }
 
 /* Content Container: signup/login을 포함하는 컨테이너 */
@@ -354,17 +455,81 @@ button:hover {
     background-color: #45a049;
 }
 
-/* My Page Container Styles */
-.mypage-container {
-    width: 300px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    text-align: center;
-}
+
 
 .logout-button {
     margin-top: 20px;
+}
+
+/* 숨겨진 상태에서 시작 */
+.hidden {
+    opacity: 0;
+    transform: translateY(50px); /* 아래에서 위로 올라오는 효과 */
+    transition: opacity 5s cubic-bezier(0.25, 0.1, 0.25, 1), transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1); /* 더 부드럽게 애니메이션 */
+}
+
+/* 보여질 때의 상태 */
+.show {
+    opacity: 1;
+    transform: translateY(0); /* 원래 위치로 이동 */
+}
+
+/* 스크롤 업 시 다시 숨기는 동작이 동일하게 적용되도록 유지 */
+.hidden-again {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* 트레블 컨테이너 스타일 */
+.travel-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 100px 0; /* 위아래 큰 여백 추가 */
+    opacity: 0; /* 처음에 보이지 않도록 */
+    transform: translateY(50px); /* 아래에서 나타나도록 설정 */
+    transition: opacity 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.travel-container.show {
+    opacity: 1;
+    transform: translateY(0); /* 원래 위치로 이동 */
+}
+
+.travel-container h2 {
+    font-size: 2.5rem;
+    color: #4CAF50; /* 초록색 텍스트 */
+    margin-bottom: 20px;
+}
+
+/* 공통 버튼 스타일 */
+.action-button {
+    padding: 15px 20px; /* 버튼 패딩을 살짝 늘림 */
+    background-color: rgba(148, 205, 147, 0.25);
+    color: #4CAF50;
+    text-decoration: none;
+    border-radius: 30px;
+    display: inline-block;
+    text-align: center;
+    font-size: 18px; /* 글자 크기 약간 증가 */
+    width: 300px; /* 버튼 너비를 300px로 설정 */
+    margin: 10px 10px; /* 버튼 사이에 간격 추가 (상하 간격을 위해 10px 0 설정) */
+    transition: background-color 0.3s ease; /* 배경색 전환 애니메이션 */
+    border: 2px solid #4CAF50; /* 초록색 테두리 */
+}
+
+.action-button:hover {
+    background-color: #45a049;
+}
+
+/* 버튼 컨테이너를 상하로 정렬 */
+.button-container {
+    display: flex;
+    flex-direction: column; /* 버튼을 상하로 나열 */
+    justify-content: center; /* 수직 중앙 정렬 */
+    align-items: center; /* 버튼을 중앙으로 정렬 */
+    margin-top: 20px; /* 버튼 컨테이너와 텍스트 사이에 간격 */
 }

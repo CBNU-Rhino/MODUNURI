@@ -139,11 +139,23 @@
     </div>
     <nav>
         <ul class="nav-links">
-            <!-- Home 클릭 시 index.html로 이동 -->
-            <li><a href="/">Home</a></li>
-            <li><a href="#">Travel Tips</a></li>
-            <li><a href="#" class="active">Community</a></li>
-            <li><a href="#">Support Center</a></li>
+            <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
+            <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
+            <li><a href="/touristSpot/map">지도 보기</a></li>
+            <li><a href="#">여행 기록하기</a></li>
+            <li><a href="/community">커뮤니티</a></li>
+            <li class="nav-item-right">
+                <span th:if="${username != null}">
+                    <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
+                    <a href="/users/mypage" class="auth-button">MyPage</a>
+                    <a href="/users/logout" class="auth-button">Logout</a>
+                </span>
+                <span th:if="${username == null}">
+                    <a class="login-message" th:text="'로그인을 해주세요'"></a>
+                    <a href="/users/signup" class="auth-button">SignUp</a>
+                    <a href="/users/login" class="auth-button">Log In</a>
+                </span>
+            </li>
         </ul>
     </nav>
 </header>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>여행 계획하기</title>
+    <link rel="stylesheet" href="/css/Travelplan.css">
+    <!-- Kakao Maps API 추가 -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9795bab39c2cc262f3aec7f26ec16196&libraries=services,drawing"></script>
+</head>
+<body>
+
+<!-- 공통 이전 버튼 -->
+<div class="back-button-container">
+    <img src="/images/back-btn.png" alt="이전 버튼" class="back-button">
+</div>
+
+<!-- Main Page -->
+<div id="mainPage" class="full-page">
+    <h2>지금 바로 여행 계획을 세우고, 꿈꾸던 여행지로 떠나보세요</h2>
+    <p>모두누리와 함께라면 순식간에 여행 준비 끝!</p>
+    <div class="centered-container">
+        <img src="center_map.png" alt="여행 이미지" class="center-image">
+        <button class="main-button next-btn">여행 계획하기</button>
+    </div>
+</div>
+
+<!-- 지도 권역 선택 페이지 (구)기간 선택 페이지 -->
+<div id="durationPage" class="full-page hidden">
+    <h2>떠나고 싶은 지역은?</h2>
+    <p>원하는 지역 1곳을 선택해 주세요.</p>
+    <div class="map-container">
+        <img src="/images/korea_map.png" alt="대한민국 지도" class="korea-map">
+
+        <!-- 권역을 나타내는 동그라미 -->
+        <div class="circle region-seoul" data-region="수도권">수도권<br>3</div>
+        <div class="circle region-chungcheong" data-region="충청권">충청권<br>3</div>
+        <div class="circle region-gangwon" data-region="강원권">강원권<br>5</div>
+        <div class="circle region-jeolla" data-region="전라권">전라권<br>5</div>
+        <div class="circle region-gyeongsang" data-region="경상권">경상권<br>7</div>
+        <div class="circle region-jeju" data-region="제주권">제주권<br>2</div>
+    </div>
+
+    <!-- '다음' 버튼 -->
+    <button class="next-btn">다음</button>
+</div>
+
+<!-- 지역 선택 페이지 -->
+<div id="regionPage" class="full-page hidden">
+    <h2>여행할 지역을 선택하세요</h2>
+    <p>어떤 도시로 여행을 떠나볼까요?</p>
+    <div class="region-buttons"></div>
+
+    <!-- '다음' 버튼 -->
+    <button class="next-btn">다음</button>
+</div>
+
+<!-- 무장애 선택 페이지 -->
+<div id="barrierPage" class="full-page hidden">
+    <h2>모두가 함께하는 여행을 위해, 무장애 시설을 선택하세요!</h2>
+    <p>걱정 없이 즐길 수 있는 편안한 여행을 위해 무장애 시설을 선택하세요.</p>
+    <div class="barrier-buttons">
+        <button class="barrier-btn" value="wheelchair">휠체어</button>
+        <button class="barrier-btn" value="stroller">유아차</button>
+        <button class="barrier-btn" value="elevator">엘리베이터</button>
+        <button class="barrier-btn" value="help_dog">안내견</button>
+        <button class="barrier-btn" value="braille_block">점자블록</button>
+    </div>
+    <button class="next-btn">다음</button>
+</div>
+
+
+<!-- 4번 페이지: 관광지 리스트 페이지 -->
+<div id="selectPage" class="full-page hidden">
+    <h2>마음에 드는 관광지를 선택해주세요</h2>
+    <p>선택하신 내용으로 관광지를 추천해봤어요.</p>
+    <div class="select-box">
+        <!-- 관광지 리스트가 동적으로 여기에 표시됨 -->
+    </div>
+    <button class="next-btn">다음</button>
+</div>
+
+<!-- 5번 페이지: 여행 계획 정리 페이지 -->
+<div id="planPage" class="full-page hidden">
+    <h2>여행 계획을 정리해보세요</h2>
+    <p>선택한 관광지를 드래그하여 순서를 조정할 수 있습니다.</p>
+
+    <!-- 여행 이름 설정 구간 -->
+    <label for="tripName">여행 이름을 정하세요:</label>
+    <input type="text" id="tripName" placeholder="여행 이름을 입력하세요">
+
+    <!-- 드래그 가능한 관광지 리스트 -->
+    <ul id="sortable">
+        <!-- 선택한 관광지 목록이 드래그 가능한 상태로 여기에 표시됨 -->
+    </ul>
+
+    <button class="next-btn">여행 완료</button>
+</div>
+
+<!-- 완성 페이지 -->
+<div id="completionPage" class="full-page hidden">
+    <h2>여행 계획이 완성되었습니다!</h2>
+    <p>이제 여행을 떠날 준비가 되셨습니다.</p>
+
+    <!-- Kakao Map -->
+    <div id="kakao-map" style="width:100%;height:400px;"></div>
+
+    <!-- Tourist Spots List (Below the map) -->
+    <div id="tourist-course-list">
+        <!-- 관광지들이 코스 순서대로 여기에 표시됨 -->
+    </div>
+
+    <button class="complete-btn">완료</button>
+</div>
+
+
+
+<script src="/static/script/Travelplan.js"></script>
+</body>
+</html>

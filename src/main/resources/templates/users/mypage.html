@@ -1,81 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Page</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}"> <!-- External CSS 파일 연결 -->
+    <title>MODUNURI</title>
+    <link rel="stylesheet" href="/css/mypage.css">
 </head>
 <body>
 <!-- Header Section -->
 <header class="navbar">
     <div class="logo">
         <a href="/"> <!-- 로고 클릭 시 index.html로 이동 -->
-            <img src="test.png"> <!-- 이미지 추가 -->
-            MODUNURI
+            <img src="/images/MODUNURI.png" class="logo img"> <!-- 이미지 추가 -->
+            <span class="a">MODUNURI</span>
         </a>
     </div>
-    <form class="search-container" action="/search" method="GET">
-        <input type="text" placeholder="Search..." class="search-input" name="query">
-    </form>
 
     <nav>
         <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Travel Tips</a></li>
-            <li><a href="#">Community</a></li>
-            <li><a href="#">Support Center</a></li>
+            <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
+            <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
+            <li><a href="/touristSpot/map">지도 보기</a></li>
+            <li><a href="/touristSpot/travelplan">여행 기록하기</a></li>
+            <li><a href="/community" id="community-link">커뮤니티</a></li>
             <!-- 로그인 상태 확인 -->
             <li class="nav-item-right">
-                <span th:if="${username != null}">
-                    <a href="/users/mypage" class="my-page-button">My Page</a> <!-- My Page 버튼 추가 -->
-                    <a th:text="${username} + '님 안녕하세요'"></a>
-                    <a href="/users/logout" class="auth-button">Logout</a>
-                </span>
+        <span th:if="${username != null}">
+        <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
+        <a href="/users/mypage" class="auth-button">MyPage</a>
+        <a href="/users/logout" class="auth-button">Logout</a>
+        </span>
                 <span th:if="${username == null}">
-                    <a href="/users/signup" class="auth-button">Sign Up</a>
-                    <a href="/users/login" class="auth-button">Log In</a> <!-- Log In 버튼 추가 -->
-                </span>
+        <a class="login-message">로그인을 해주세요</a>
+        <a href="/users/signup" class="auth-button">SignUp</a>
+        <a href="/users/login" class="auth-button">Log In</a>
+    </span>
             </li>
         </ul>
     </nav>
 </header>
 
-<!-- Main Content -->
-<main class="mypage-container">
-    <h1>Welcome to My Page</h1>
-    <p th:text="'Hello, ' + ${username} + '!'"></p>
-    <p>Here you can view and manage your personal information.</p>
+<!-- Main Container -->
+<main class="main-container">
+    <div class="mypage-content">
+        <!-- Profile Section -->
+        <section class="block profile-section">
+            <h2>Profile</h2>
+            <hr class="divider"> <!-- 구분선 추가 -->
+            <div class="profile-details">
+                <img src="/images/travelers.png" alt="Profile Image" class="profile-img">
+                <div class="profile-info">
+                    <p><strong>Username:</strong> <span th:text="${username}"></span></p>
+                </div>
+            </div>
+        </section>
 
-    <!-- 관심 관광지 목록 -->
-    <section class="favorite-contents">
-        <h2>Your Favorite Places</h2>
-        <ul>
-            <!-- 관심 관광지 목록이 있을 때 -->
-            <li th:each="content : ${favoriteContents}" th:unless="${#lists.isEmpty(favoriteContents)}">
-                <span th:text="${content}"></span>
-                <form action="/users/removeFavorite" method="post" style="display:inline;">
-                    <input type="hidden" name="contentId" th:value="${content}" />
-                    <button type="submit" class="remove-button">Remove</button>
-                </form>
-            </li>
-            <!-- 관심 관광지가 없을 때 -->
-            <p th:if="${#lists.isEmpty(favoriteContents)}">관심 관광지가 없습니다.</p>
-        </ul>
-    </section>
+        <!-- 관심 관광지 목록 -->
+        <section class="block favorite-contents">
+            <h2 th:text="${username} + '님이 저장한 관광지 목록'">Your Favorite Places</h2>
+            <hr class="divider"> <!-- 구분선 추가 -->
+            <ul>
+                <!-- 관심 관광지 목록이 있을 때 -->
+                <div id="saved-places" class="saved-places">
+                    <!-- 관심 관광지 목록이 동적으로 추가됩니다 -->
+                </div>
+                <!-- 빈 목록일 때 보여줄 메시지 -->
+                <p id="no-places-message" style="display: none; color: #777; text-align: center;">관광지를 저장해보세요</p>
+            </ul>
+        </section>
+    </div>
 </main>
 
 <!-- Footer Section -->
 <footer class="footer">
     <div class="footer-links">
         <ul>
-            <li><a href="#">Find a Store</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Use</a></li>
+            <li><p>&copy; 2024 MODUNURI</p></li>
+
         </ul>
     </div>
 </footer>
-<script src="/static/script/script.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        loadSavedPlaces(); // 페이지가 로드될 때 관심 관광지 목록 불러오기
+    });
+
+    function loadSavedPlaces() {
+        fetch('/users/getFavoriteContents')
+            .then(response => response.json())
+            .then(favoritePlacesData => {
+                const savedPlaces = document.querySelector('#saved-places');
+                const noPlacesMessage = document.querySelector('#no-places-message');
+                savedPlaces.innerHTML = ''; // 기존 목록을 초기화
+
+                if (Object.keys(favoritePlacesData).length === 0) {
+                    noPlacesMessage.style.display = 'block'; // 빈 목록일 때 메시지 표시
+                } else {
+                    noPlacesMessage.style.display = 'none'; // 목록이 있을 때 메시지 숨김
+                    Object.keys(favoritePlacesData).forEach(contentId => {
+                        const contentTypeId = favoritePlacesData[contentId];
+                        fetch(`/touristSpot/Json/tourist-information?contentId=${contentId}&contentTypeId=${contentTypeId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                displaySavedPlace(data.touristDetail);
+                            })
+                            .catch(error => console.error("Error fetching tourist information:", error));
+                    });
+                }
+            })
+            .catch(error => console.error('Error loading saved places:', error));
+    }
+
+    // 저장된 관광지 정보를 표시
+    function displaySavedPlace(touristDetail) {
+        const savedPlaces = document.querySelector('#saved-places');
+        const placeBox = document.createElement('div');
+        placeBox.classList.add('place-box');
+        placeBox.id = `place-${touristDetail.contentid}`;
+        // 관광지 클릭 시 상세 정보 페이지로 이동하는 이벤트
+        placeBox.addEventListener('click', () => {
+            window.location.href = `/touristSpot/tourist-information?contentId=${touristDetail.contentid}&contentTypeId=${touristDetail.contenttypeid}`;
+        });
+        const imageUrl = touristDetail.firstimage || '/images/placeholder.jpg';
+        const title = touristDetail.title || "제목 없음";
+        const address = touristDetail.addr1 || "주소 없음";
+
+        placeBox.innerHTML = `
+        <div class="place-info">
+            <img src="${imageUrl}" alt="${title}" class="place-image" />
+            <div class="place-text">
+                <h4>${title}</h4>
+                <p>${address}</p>
+                <!-- 동기식 폼을 이용한 삭제 버튼 -->
+                <form action="/users/removeFavorite" method="POST">
+                    <input type="hidden" name="contentId" value="${touristDetail.contentid}">
+                    <button type="submit" class="remove-button">지우기</button>
+                </form>
+            </div>
+        </div>
+    `;
+
+        savedPlaces.appendChild(placeBox);
+    }
+</script>
+
 </body>
 </html>

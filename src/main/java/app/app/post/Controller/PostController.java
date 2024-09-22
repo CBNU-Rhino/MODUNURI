@@ -56,6 +56,7 @@ public class PostController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
     // 게시물 생성하기
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody Post post) {

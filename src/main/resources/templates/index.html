@@ -15,63 +15,90 @@
             <span class="a">MODUNURI</span>
         </a>
     </div>
-    <form class="search-container" action="/search" method="GET">
-        <input type="text" placeholder="Search..." class="search-input" name="query">
-    </form>
 
     <nav>
         <ul class="nav-links">
             <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
             <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
-            <li><a href="#" id="community-link">지도 보기</a></li>
-            <li><a href="#">여행 기록하기</a></li>
+            <li><a href="/touristSpot/map" id="community-link">지도 보기</a></li>
+            <li><a href="/touristSpot/travelplan">여행 기록하기</a></li>
+            <li><a href="/community">커뮤니티</a></li>
             <!-- 로그인 상태 확인 -->
             <li class="nav-item-right">
-                <span th:if="${username != null}">
-                    <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
-                    <a href="/users/mypage" class="auth-button">MyPage</a> <!-- My Page 버튼 추가 -->
-                    <a href="/users/logout" class="auth-button">Logout</a>
-                </span>
+        <span th:if="${username != null}">
+        <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
+        <a href="/users/mypage" class="auth-button">MyPage</a>
+        <a href="/users/logout" class="auth-button">Logout</a>
+        </span>
                 <span th:if="${username == null}">
-                    <a class="login-message" th:text="'로그인을 해주세요'"></a>
-                    <a href="users/signup" class="auth-button">SignUp</a>
-                    <a href="users/login" class="auth-button">Log In</a> <!-- Log In 버튼 추가 -->
-                </span>
+        <a class="login-message">로그인을 해주세요</a>
+        <a href="/users/signup" class="auth-button">SignUp</a>
+        <a href="/users/login" class="auth-button">Log In</a>
+    </span>
             </li>
         </ul>
     </nav>
 </header>
 
+<!-- Fullscreen Video Section -->
+<section class="video-container">
+    <video autoplay muted loop class="fullscreen-video">
+        <source src="/video/mainvideo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- 비디오 위의 텍스트 추가 -->
+    <div class="video-text">
+        <h1>MODUNURI</h1>
+        <h3>무장애 관광 여행</h3>
+    </div>
+
+</section>
+
 <!-- Main Content Section -->
 <main>
-    <div class="slider"> <!-- 슬라이드 -->
-        <div class="slides">
-            <div class="slide" style="background-color: #ffffff;">Slide 1</div>
-            <div class="slide" style="background-color: #ffffff;">Slide 2</div>
-            <div class="slide" style="background-color: #ffffff;">Slide 3</div>
-            <div class="slide" style="background-color: #ffffff;">Slide 4</div>
-            <!-- 더 많은 슬라이드 추가 가능 -->
-        </div>
-        <div class="dots-container">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-        </div>
+
+    <!-- 화살표 이미지 추가 -->
+    <div class="arrow-container hidden">
+        <img src="/images/arrow1.png" alt="Arrow Down" class="arrow-icon">
     </div>
+
+
+    <!-- 새로운 컨테이너: 2등분된 레이아웃 -->
+    <section class="split-container">
+        <div class="left-content">
+            <h2>무거운 캐리어
+                들고 다니는 여행 대신</h2>
+            <h1>편하게 끌고 다니는 여행</h1>
+        </div>
+        <div class="right-content">
+            <img src="/images/travelers.png" alt="Beautiful Nature" class="img-right">
+        </div>
+    </section>
+
     <!-- Additional Content Section -->
     <section class="additional-content">
         <h2>관광지 추천</h2>
         <p>모두누리가 추천하는 여행 코스</p>
     </section>
 
-    <!-- 버튼 컨테이너 -->
-    <div class="button-container">
-        <a href="#" class="button">Button 1</a>
-        <a href="#" class="button">Button 2</a>
-        <a href="#" class="button">Button 3</a>
-        <a href="#" class="button">Button 4</a>
+    <!-- 이미지 컨테이너 -->
+    <div class="image-container">
+        <img src="/images/img1.png" alt="Image 1" class="img-item hidden">
+        <img src="/images/img2.png" alt="Image 2" class="img-item hidden">
+        <img src="/images/img3.png" alt="Image 3" class="img-item hidden">
+    </div>
 
+    <!-- 여행 문구와 버튼 (로그인 여부에 따라 표시) -->
+    <div th:if="${username != null}" class="travel-container">
+        <h2>모두누리와 여행을 떠나 보세요</h2> <!-- 문구 수정 해주세요 -->
+    </div>
+    <div th:if="${username == null}" class="travel-container"> <!-- 'hidden' 클래스 제거 -->
+        <h2>모두누리와 여행을 함께하고 싶으시다면</h2>
+        <div class="button-container">
+            <a href="/users/signup" class="auth-button">SignUp</a>
+            <a href="/users/login" class="auth-button">Log In</a>
+        </div>
     </div>
 </main>
 
@@ -79,7 +106,7 @@
 <footer class="footer">
     <div class="footer-links">
         <ul>
-            <li><p>(주)코뿔소코퍼레이션</p></li>
+            <li><p>&copy; 2024 MODUNURI</p></li>
 
         </ul>
     </div>

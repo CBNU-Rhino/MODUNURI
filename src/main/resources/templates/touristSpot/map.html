@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관광지 지도</title>
+    <link rel="stylesheet" href="/css/map.css">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9795bab39c2cc262f3aec7f26ec16196&libraries=services,drawing"></script>
+</head>
+<body>
+
+<!-- Header Section -->
+<header class="navbar">
+    <div class="logo">
+        <a href="/"> <!-- 로고 클릭 시 index.html로 이동 -->
+            <img src="/images/MODUNURI.png" class="logo img"> <!-- 이미지 추가 -->
+            <span class="a">MODUNURI</span>
+        </a>
+    </div>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
+            <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
+            <li><a href="/touristSpot/map" id="community-link">지도 보기</a></li>
+            <li><a href="/touristSpot/travelplan">여행 기록하기</a></li>
+            <li><a href="/community">커뮤니티</a></li>
+            <!-- 로그인 상태 확인 -->
+            <li class="nav-item-right">
+        <span th:if="${username != null}">
+        <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
+        <a href="/users/mypage" class="auth-button">MyPage</a>
+        <a href="/users/logout" class="auth-button">Logout</a>
+        </span>
+                <span th:if="${username == null}">
+        <a class="login-message">로그인을 해주세요</a>
+        <a href="/users/signup" class="auth-button">SignUp</a>
+        <a href="/users/login" class="auth-button">Log In</a>
+    </span>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Back Container to Highlight Main Section -->
+<div class="back-container">
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left Panel for Tour List -->
+        <div class="tour-list">
+            <h2>내 저장 목록</h2>
+            <div id="saved-places" class="saved-places drop-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <!-- 저장된 관광지 박스가 여기에 추가됩니다. -->
+            </div>
+
+            <h3>일정</h3>
+            <div id="schedule" class="drop-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <!-- 관광지를 드롭할 수 있는 공간 -->
+            </div>
+
+            <button onclick="getCarDirection()">경로 그리기</button>
+            <button onclick="clearRoute()">경로 지우기</button>
+        </div>
+
+        <!-- Right Panel for Map -->
+        <div id="map" style="width: 70%; height: 600px;"></div>
+    </div>
+</div>
+
+<!-- Modal for Tourist Spot Detail -->
+<div class="modal-backdrop"></div> <!-- 어두운 배경 -->
+<div class="modal">
+    <div class="modal-content">
+        <button class="close_btn">&times;</button>
+        <h3 id="modal-title">관광지 정보</h3>
+        <img id="modal-image" src="" alt="관광지 이미지" style="width: 100%; height: auto; margin-top: 10px;" />
+        <p id="modal-overview"></p>
+        <p id="modal-address"></p>
+        <p id="modal-tel"></p>
+
+        <!-- 추가된 정보 -->
+        <p><strong>홈페이지:</strong> <span id="modal-homepage"></span></p>
+        <p><strong>주차:</strong> <span id="modal-parking"></span></p>
+        <p><strong>장애인 화장실:</strong> <span id="modal-restroom"></span></p>
+        <p><strong>휠체어 정보:</strong> <span id="modal-wheelchair"></span></p>
+        <p><strong>유모차 정보:</strong> <span id="modal-stroller"></span></p>
+        <p><strong>시각장애인 편의 정보:</strong> <span id="modal-blindhandicapetc"></span></p>
+        <p><strong>엘리베이터:</strong> <span id="modal-elevator"></span></p>
+    </div>
+</div>
+
+<!-- Footer Section -->
+<footer class="footer">
+    <div class="footer-links">
+        <ul>
+            <li><p>&copy; 2024 MODUNURI</p></li>
+
+        </ul>
+    </div>
+</footer>
+
+<script src="/script/map.js"></script>
+</body>
+</html>

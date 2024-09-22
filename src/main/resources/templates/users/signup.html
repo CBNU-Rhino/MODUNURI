@@ -11,20 +11,18 @@
 <header class="navbar">
     <div class="logo">
         <a href="/"> <!-- 로고 클릭 시 index.html로 이동 -->
-            <img src="test.png"> <!-- 이미지 추가 -->
+            <img src="/images/MODUNURI.png"> <!-- 이미지 추가 -->
             MODUNURI
         </a>
     </div>
-    <form class="search-container" action="/search" method="GET">
-        <input type="text" placeholder="Search..." class="search-input" name="query">
-    </form>
 
     <nav>
         <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Travel Tips</a></li>
-            <li><a href="#">Community</a></li>
-            <li><a href="#">Support Center</a></li>
+            <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
+            <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
+            <li><a href="/touristSpot/map">지도 보기</a></li>
+            <li><a href="#">여행 기록하기</a></li>
+            <li><a href="/community">커뮤니티</a></li>
             <!-- 로그인 상태 확인 -->
             <li class="nav-item-right">
                 <span th:if="${username != null}">
@@ -45,6 +43,12 @@
     <div class="content-container">
         <div class="signup-container">
             <h1>Sign Up</h1>
+
+            <!-- 오류 메시지를 보여줄 부분 추가 -->
+            <div th:if="${error}" class="error-message" style="color: red;">
+                <p th:text="${error}"></p>
+            </div>
+
             <!-- form 태그에 action과 method 추가 -->
             <form action="/users/signup" method="POST">
                 <label for="username">Username</label>

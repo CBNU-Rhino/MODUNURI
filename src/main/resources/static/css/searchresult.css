@@ -1,10 +1,17 @@
-/* 기본 설정 */
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard.woff') format('woff');
+    font-weight: 100 900;
+    font-style: normal;
+}
+
 html, body {
     height: 100%;
     margin: 0;
-    font-family: pretendard;
-    color: #1d1d1f;
-    background-color: #EFFFE9;
+    font-family: 'Pretendard', sans-serif;
+    color: #717171;
+    background-color: #F5FFF5;
 }
 
 /* Navbar */
@@ -71,30 +78,6 @@ html, body {
     margin-right: 15px; /* 로그인 메시지와 회원가입 버튼 사이 간격 */
 }
 
-.search-container {
-    display: flex;
-    align-items: center;
-    background-color: rgba(148, 205, 147, 0.25);
-    border-radius: 30px;
-    padding: 5px 15px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-    width: 300px; /* 가로 길이를 300px로 설정 */
-    margin-right: 3px; /* nav-links와의 간격을 줄임 */
-    margin-left: 3px; /* 로고와의 간격을 조금 줄임 */
-}
-
-.search-input {
-    padding: 10px 10px;
-    border: none;
-    border-radius: 30px;
-    outline: none;
-    font-size: 16px;
-    color: #717171;
-    width: 270px; /* 입력 필드의 너비를 컨테이너에 맞게 조정 */
-    background: transparent;
-}
-
 
 .nav-item {
     color: #fff;
@@ -112,20 +95,22 @@ html, body {
 /* 공통 버튼 스타일 */
 .auth-button {
     padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: rgba(148, 205, 147, 0.25);
+    color: #4CAF50 !important;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 10px;
     display: inline-block;
     text-align: center;
     font-size: 16px;
     width: 100px; /* 동일한 너비 설정 */
     box-sizing: border-box;
-    margin-left: 10px; /* 버튼 간격 조정 */
+    margin-left: 5px; /* 버튼 간격 조정 */
+    border: 2px solid #4CAF50; /* 초록색 테두리 */
 }
 
 .auth-button:hover {
     background-color: #45a049;
+    color: #F5FFF5 !important;
 }
 
 .nav-item-right {
@@ -336,19 +321,18 @@ html, body {
     visibility: visible; /* 숨겨진 요소가 없도록 설정 */
 }
 
-/* 블로그 포스팅 섹션 제목 스타일 */
+/* 블로그 포스팅 섹션 */
 .blog-posts-block h3 {
     text-align: left; /* 제목을 왼쪽 정렬 */
     font-size: 22px;     /* 제목의 크기를 다른 섹션과 맞춤 */
     color: #4CAF50;      /* 색상을 통일된 그린 컬러로 지정 */
     margin-bottom: 10px; /* 아래쪽 여백을 조절 */
 }
-
 /* 블로그 포스트 카드 스타일 */
 .blog-card {
     display: flex;
-    flex-direction: column; /* 썸네일 제거 후 세로로 정렬 */
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     background-color: #F3F8E6; /* 카드 배경 */
     border: 2px solid #BCC7A3;
     border-radius: 10px;
@@ -367,13 +351,28 @@ html, body {
 .blog-link {
     text-decoration: none;
     color: inherit;
-    display: block; /* 이미지를 제외하고 텍스트만 표시 */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* 썸네일 이미지 */
+.blog-thumbnail {
+    width: 100px; /* 썸네일 크기 */
+    height: 100px;
+    margin-right: 15px; /* 썸네일과 텍스트 사이 간격 */
+}
+
+.blog-thumbnail img {
+    width: 100%; /* 썸네일 이미지를 컨테이너 크기에 맞춤 */
+    height: 100%;
+    object-fit: cover; /* 이미지 비율 유지하면서 크기 맞추기 */
+    border-radius: 8px; /* 썸네일 이미지에 약간의 둥근 모서리 */
 }
 
 /* 블로그 내용 */
 .blog-content {
     flex: 1; /* 텍스트 컨텐츠가 남은 공간을 채우도록 설정 */
-    width: 100%; /* 너비를 100%로 설정하여 정렬 보정 */
 }
 
 .blog-title {
@@ -393,7 +392,6 @@ html, body {
     color: #717171;
     line-height: 1.6;
 }
-
 
 
 

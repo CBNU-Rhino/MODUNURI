@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관광지 상세 정보</title>
     <link rel="stylesheet" href="/css/searchresult.css">
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9795bab39c2cc262f3aec7f26ec16196&libraries=services"></script> <!-- 카카오 지도 SDK 추가 -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9795bab39c2cc262f3aec7f26ec16196&libraries=services"></script>
 </head>
 <body>
 
@@ -17,98 +17,75 @@
             <span class="a">MODUNURI</span>
         </a>
     </div>
-    <form class="search-container" action="/search" method="GET">
-        <input type="text" placeholder="Search..." class="search-input" name="query">
-    </form>
 
     <nav>
         <ul class="nav-links">
             <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
             <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
-            <li><a href="#" id="community-link">지도 보기</a></li>
-            <li><a href="#">여행 기록하기</a></li>
+            <li><a href="/touristSpot/map" id="community-link">지도 보기</a></li>
+            <li><a href="/touristSpot/travelplan">여행 기록하기</a></li>
+            <li><a href="/community">커뮤니티</a></li>
             <!-- 로그인 상태 확인 -->
             <li class="nav-item-right">
-                <span th:if="${username != null}">
-                    <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
-                    <a href="/users/mypage" class="auth-button">MyPage</a> <!-- My Page 버튼 추가 -->
-                    <a href="/users/logout" class="auth-button">Logout</a>
-                </span>
+        <span th:if="${username != null}">
+        <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
+        <a href="/users/mypage" class="auth-button">MyPage</a>
+        <a href="/users/logout" class="auth-button">Logout</a>
+        </span>
                 <span th:if="${username == null}">
-                    <a class="login-message" th:text="'로그인을 해주세요'"></a>
-                    <a href="users/signup" class="auth-button">SignUp</a>
-                    <a href="users/login" class="auth-button">Log In</a> <!-- Log In 버튼 추가 -->
-                </span>
+        <a class="login-message">로그인을 해주세요</a>
+        <a href="/users/signup" class="auth-button">SignUp</a>
+        <a href="/users/login" class="auth-button">Log In</a>
+    </span>
             </li>
         </ul>
     </nav>
 </header>
 
 <div class="main-container">
-    <!-- 상단 블록: 사진 및 무장애 정보 섹션 -->
     <div class="block upper-block">
-        <!-- 왼쪽: 장소 이미지 섹션 -->
         <div class="left-section">
-            <img id="tourist-image" src="placeholder.jpg" alt="Place Image" class="place-img"> <!-- 동적으로 이미지 추가 -->
-
+            <img id="tourist-image" src="/images/placeholder.jpg" alt="Place Image" class="place-img">
             <div class="button-icon-container">
-                <form id="save-form" action="/save" method="POST">
+                <form id="save-form" action="/users/save" method="POST">
                     <button type="submit" class="save-button" id="save-button">저장하기</button>
                 </form>
-                <img src="/icons/save_icon.png" alt="Save Icon" class="save-icon"> <!-- 저장하기 버튼 옆에 추가할 아이콘 -->
+                <img src="/icons/save_icon.png" alt="Save Icon" class="save-icon" id="save-icon">
             </div>
         </div>
-
-        <!-- 오른쪽: 아이콘 및 무장애 정보 -->
         <div class="right-section">
-            <!-- 아이콘 섹션 -->
-            <div class="icon-container">
-            </div>
+            <div class="icon-container"></div>
             <h3>무장애 관광 시설 정보</h3>
-            <hr class="hr-line"> <!-- 무장애 정보 구분선 -->
-            <ul id="accessibility-info">
-                <!-- 무장애 정보가 여기에 동적으로 추가될 예정 -->
-            </ul>
+            <hr class="hr-line">
+            <ul id="accessibility-info"></ul>
         </div>
     </div>
 
-    <!-- 장소 이름 블록 -->
     <div class="block place-name-block">
         <h2 id="place-name">관광지 이름</h2>
-        <hr class="hr-line"> <!-- 구분선 -->
-        <p id="place-description">
-            관광지에 대한 설명이 여기에 표시됩니다.
-        </p>
+        <hr class="hr-line">
+        <p id="place-description">관광지에 대한 설명이 여기에 표시됩니다.</p>
     </div>
 
-    <!-- 장소 세부 설명 블록 -->
     <div class="block place-details-block">
         <h3>장소 정보</h3>
-        <hr class="hr-line"> <!-- 장소 정보 구분선 -->
-        <ul id="place-details">
-            <!-- 장소 세부 정보가 여기에 동적으로 추가될 예정 -->
-        </ul>
+        <hr class="hr-line">
+        <ul id="place-details"></ul>
     </div>
 
-    <!-- 지도 블록 -->
     <div class="block place-map-block">
         <h3>위치</h3>
-        <hr class="hr-line"> <!-- 구분선 -->
-        <div class="section place-map" id="kakao-map" style="width:100%;height:350px;"></div> <!-- 카카오맵이 표시될 영역 -->
+        <hr class="hr-line">
+        <div class="section place-map" id="kakao-map" style="width:100%;height:350px;"></div>
     </div>
 
-    <!-- 블로그 포스팅 섹션 -->
     <div class="block blog-posts-block">
         <h3>블로그 후기</h3>
         <hr class="hr-line">
-        <ul id="blog-posts">
-            <!-- 여기에 블로그 카드가 동적으로 추가됩니다 -->
-        </ul>
+        <ul id="blog-posts"></ul>
     </div>
-
-
 </div>
-<!-- Footer Section -->
+
 <footer class="footer">
     <div class="footer-links">
         <ul>
@@ -118,38 +95,27 @@
 </footer>
 
 <script>
-    // URL에서 contentId와 contentTypeId를 가져옴
     const urlParams = new URLSearchParams(window.location.search);
-    const contentId = urlParams.get('contentId');
-    const contentTypeId = urlParams.get('contentTypeId');
+    const contentid = urlParams.get('contentid');
+    const contenttypeid = urlParams.get('contenttypeid');
+
 
     if (!contentId || !contentTypeId) {
         document.getElementById('tourist-spot-info').innerHTML = '<p>유효하지 않은 관광지입니다.</p>';
     } else {
-        // 선택된 관광지의 상세 정보를 서버에서 가져옴
         const apiUrl = `/touristSpot/Json/tourist-information?contentId=${contentId}&contentTypeId=${contentTypeId}`;
-
         fetch(apiUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log(data); // API 결과를 콘솔에 출력하여 확인
                 if (!data || !data.touristDetail) {
                     document.getElementById('tourist-spot-info').innerHTML = '<p>관광지 정보를 찾을 수 없습니다.</p>';
                     return;
                 }
 
-                // 이미지 업데이트
-                document.getElementById('tourist-image').src = data.touristDetail.firstimage ? data.touristDetail.firstimage : '/images/placeholder.jpg';
-                // 제목 및 설명 업데이트
+                document.getElementById('tourist-image').src = data.touristDetail.firstimage || '/images/placeholder.jpg';
                 document.getElementById('place-name').textContent = data.touristDetail.title;
                 document.getElementById('place-description').textContent = data.touristDetail.overview;
 
-                // 장소 세부 정보 업데이트
                 const placeDetails = `
                     <li>주소: ${data.touristDetail.addr1 || 'N/A'}</li>
                     <li>전화번호: ${data.touristDetail.tel || 'N/A'}</li>
@@ -158,24 +124,20 @@
                 `;
                 document.getElementById('place-details').innerHTML = placeDetails;
 
-                // 무장애 관광 시설 정보 업데이트
                 const accessibilityInfo = `
                     <li>주출입구: ${data.accessibilityInfo?.exit || '정보 없음'}</li>
                     <li>화장실: ${data.accessibilityInfo?.restroom || '정보 없음'}</li>
                     <li>안내견 동반 가능: ${data.accessibilityInfo?.helpdog || '정보 없음'}</li>
                     <li>점자블록: ${data.accessibilityInfo?.braileblock || '정보 없음'}</li>
                     <li>엘리베이터: ${data.accessibilityInfo?.elevator || '정보 없음'}</li>
-                    <li>유아차: ${data.accessibilityInfo?.stroller || '정보 없음'}</li> <!-- 유아차 정보 추가 -->
-                    <li>휠체어: ${data.accessibilityInfo?.wheelchair || '정보 없음'}</li> <!-- 휠체어 정보 추가 -->
-                    <li>장애인 주차구역: ${data.accessibilityInfo?.parking || '정보 없음'}</li> <!-- 주차구역 정보 추가 -->
+                    <li>유아차: ${data.accessibilityInfo?.stroller || '정보 없음'}</li>
+                    <li>휠체어: ${data.accessibilityInfo?.wheelchair || '정보 없음'}</li>
+                    <li>장애인 주차구역: ${data.accessibilityInfo?.parking || '정보 없음'}</li>
+                    <li>시각장애인 편의시설: ${data.accessibilityInfo?.blindhandicapetc || '정보 없음'}</li>
                 `;
                 document.getElementById('accessibility-info').innerHTML = accessibilityInfo;
 
-                // 아이콘 컨테이너에 동적으로 아이콘 추가
                 const iconContainer = document.querySelector('.icon-container');
-                iconContainer.innerHTML = ''; // 기존 아이콘 초기화
-
-                // 아이콘 추가를 위한 데이터 매핑
                 const iconMapping = {
                     exit: '/icons/ramp_icon.png',
                     restroom: '/icons/restroom_icon.png',
@@ -187,82 +149,28 @@
                     parking: '/icons/parking_icon.png'
                 };
 
-                // '정보없음'일 경우에 사용할 아이콘 경로를 항목별로 정의
                 const noInfoIcons = {
-                    exit: '/icons/no_ramp_icon.png',       // 경사로 정보 없음일 때 사용할 아이콘
-                    restroom: '/icons/no_restroom_icon.png', // 화장실 정보 없음일 때 사용할 아이콘
-                    helpdog: '/icons/no_helpdog_icon.png',   // 안내견 정보 없음일 때 사용할 아이콘
-                    braileblock: '/icons/no_braille_icon.png', // 점자블록 정보 없음일 때 사용할 아이콘
-                    elevator: '/icons/no_elevator_icon.png',   // 엘리베이터 정보 없음일 때 사용할 아이콘
+                    exit: '/icons/no_ramp_icon.png',
+                    restroom: '/icons/no_restroom_icon.png',
+                    helpdog: '/icons/no_helpdog_icon.png',
+                    braileblock: '/icons/no_braille_icon.png',
+                    elevator: '/icons/no_elevator_icon.png',
                     stroller: '/icons/no_babystroller_icon.png',
                     wheelchair: '/icons/no_wheelchair_icon.png',
                     parking: '/icons/no_parking_icon.png'
                 };
 
-                // 무장애 정보에 따른 아이콘 동적 추가
                 Object.keys(iconMapping).forEach(key => {
-                    // '정보 없음'인지 확인
-                    if (data.accessibilityInfo?.[key] && data.accessibilityInfo[key] !== '정보 없음') {
-                        // 정보가 있을 경우 정상 아이콘 표시
-                        const icon = document.createElement('img');
-                        icon.src = iconMapping[key];
-                        icon.classList.add('icon');
-                        icon.alt = key;
-                        iconContainer.appendChild(icon);
-                    } else {
-                        // 정보가 없을 경우 해당 '정보 없음' 아이콘 표시
-                        const noIcon = document.createElement('img');
-                        noIcon.src = noInfoIcons[key];
-                        noIcon.classList.add('icon');
-                        noIcon.alt = `no information for ${key}`;
-                        iconContainer.appendChild(noIcon);
-                    }
+                    const icon = document.createElement('img');
+                    icon.src = data.accessibilityInfo?.[key] && data.accessibilityInfo[key] !== '정보 없음'
+                        ? iconMapping[key]
+                        : noInfoIcons[key];
+                    icon.classList.add('icon');
+                    icon.alt = key;
+                    iconContainer.appendChild(icon);
                 });
 
-                // 서버로 데이터를 전송하는 기존 코드
-                document.getElementById('save-form').addEventListener('submit', function (e) {
-                    e.preventDefault(); // 폼의 기본 동작인 새로고침 방지
-
-                    const saveButton = document.getElementById('save-button');
-                    const saveIcon = document.getElementById('save-icon'); // 아이콘 요소 선택
-
-                    // 서버로 데이터 전송 (AJAX)
-                    fetch('/save', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            contentId: '<content_id>',
-                            contentTypeId: '<content_type_id>',
-                            // 추가 데이터가 있다면 여기에 포함
-                        })
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                // 저장 성공 시 알림창 표시
-                                alert('저장이 완료되었습니다!');
-
-                                // 저장 완료 후 버튼 텍스트 변경 및 비활성화
-                                saveButton.textContent = '저장 완료';
-                                saveButton.disabled = true; // 버튼 비활성화
-                                saveButton.style.backgroundColor = '#4CAF50'; // 색상 변경
-
-                                // 아이콘을 saved_icon으로 변경
-                                saveIcon.src = '/icons/saved_icon.png'; // 저장된 상태의 아이콘으로 변경
-                                saveIcon.alt = 'Saved Icon'; // alt 텍스트 변경
-                            } else {
-                                // 실패 처리
-                                alert('저장에 실패했습니다.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                });
-
-
-                // 카카오 맵에 해당 관광지의 위치를 표시 (지도 위치가 존재할 경우에만)
+                // 카카오 맵
                 if (data.touristDetail.mapx && data.touristDetail.mapy) {
                     const mapContainer = document.getElementById('kakao-map');
                     const mapOption = {
@@ -276,12 +184,14 @@
                     });
                     marker.setMap(map);
                 } else {
-                    document.getElementById('kakao-map').style.display = 'none'; // 위치 정보가 없으면 지도 숨김
+                    document.getElementById('kakao-map').style.display = 'none';
                 }
 
-                // 블로그 검색 실행
+                // 블로그 검색
                 fetchBlogPosts(data.touristDetail.title);
 
+                // 저장된 장소인지 확인
+                checkIfSaved();
             })
             .catch(error => {
                 console.error('Error fetching tourist spot information:', error);
@@ -289,19 +199,13 @@
             });
     }
 
-    // 블로그 검색을 수행하는 함수
     function fetchBlogPosts(query) {
-        const apiUrl = `/api/naver-search-blog?query=${encodeURIComponent(query)}`; // 경로 수정
+        const apiUrl = `/api/naver-search-blog?query=${encodeURIComponent(query)}`;
 
         fetch(apiUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('네이버 블로그 검색 API 호출 실패');
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                const blogPosts = data.items;
+                const blogPosts = data.items || [];
                 const blogPostsContainer = document.getElementById('blog-posts');
                 blogPostsContainer.innerHTML = '';
 
@@ -310,27 +214,118 @@
                 } else {
                     blogPosts.forEach(post => {
                         const listItem = document.createElement('li');
-                        listItem.classList.add('blog-card'); // 카드 스타일을 위한 클래스 추가
-
-                        // 썸네일이 없으면 기본 이미지 사용
-                        const thumbnail = post.thumbnail || 'default-thumbnail.jpg';
+                        listItem.classList.add('blog-card');
 
                         listItem.innerHTML = `
-                         <a href="${post.link}" target="_blank" class="blog-link">
-                            <div class="blog-content">
+                                <a href="${post.link}" target="_blank" class="blog-link">
+                                <div class="blog-content">
                                 <h4 class="blog-title">${post.title}</h4>
                                 <p class="blog-description">${post.description || '설명이 없습니다.'}</p>
-                            </div>
+                        </div>
                         </a>
-                    `;
+                        `;
                         blogPostsContainer.appendChild(listItem);
                     });
                 }
             })
             .catch(error => {
                 console.error('블로그 검색 실패:', error);
+                document.getElementById('blog-posts').innerHTML = '<li>블로그 정보를 가져오는 중 오류가 발생했습니다.</li>';
             });
     }
+
+    // 저장 이벤트 처리
+    document.getElementById('save-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const saveButton = document.getElementById('save-button');
+        const saveIcon = document.getElementById('save-icon');
+
+        if (!contentId || !contentTypeId) {
+            alert('유효한 관광지 정보가 없습니다.');
+            return;
+        }
+
+        // 서버로 데이터 전송 (AJAX)
+        fetch('/users/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contentId: contentid,
+                contentTypeId: contenttypeid
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('저장이 완료되었습니다!');
+                    saveButton.textContent = '저장된 관광지';
+                    saveButton.disabled = true;
+                    saveButton.style.backgroundColor = '#4CAF50';
+                    saveIcon.src = '/icons/saved_icon.png';
+                    saveIcon.alt = 'Saved Icon';
+                }
+                if (response.status === 401) { // 로그인하지 않은 경우
+                    throw new Error('로그인을 해주세요');
+                }else {
+                    return response.json().then(errorData => {
+                        alert('저장에 실패했습니다: ' + errorData.message);
+                    });
+                }
+            })
+            .catch(error => {
+                if (error.message === '로그인을 해주세요') {
+                    alert('저장에 실패했습니다: 로그인을 해주세요');
+                } else {
+                    console.error('Error:', error);
+                }
+            });
+    });
+
+    // 저장된 상태 확인하는 함수
+    function checkIfSaved() {
+        fetch('/users/checkSaved', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ contentId: contentId, contentTypeId: contentTypeId })  // contentTypeId도 함께 보냄
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    return;
+                }
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();  // Boolean 값 반환
+            })
+            .then(data => {
+                const isSaved = data;  // Boolean 값으로 처리
+                const saveButton = document.getElementById('save-button');
+                const saveIcon = document.getElementById('save-icon');
+
+                if (isSaved) {
+                    saveButton.textContent = '저장된 관광지';
+                    saveButton.disabled = true;
+                    saveButton.style.backgroundColor = '#4CAF50';
+                    saveIcon.src = '/icons/saved_icon.png';
+                    saveIcon.alt = 'Saved Icon';
+                } else {
+                    saveButton.textContent = '저장하기';
+                    saveButton.disabled = false;
+                    saveButton.style.backgroundColor = ''; // 기본 색상으로 되돌림
+                    saveIcon.src = '/icons/save_icon.png';
+                    saveIcon.alt = 'Save Icon';
+                }
+            })
+            .catch(error => {
+                console.error('Error checking saved status:', error);
+                alert('저장된 상태를 확인하는 중 문제가 발생했습니다. 다시 시도해 주세요.');
+            });
+    }
+
 
 </script>
 </body>

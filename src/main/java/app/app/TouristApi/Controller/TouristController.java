@@ -3,6 +3,7 @@ package app.app.TouristApi.Controller;
 import app.app.TouristApi.DTO.TouristInfoDTO;
 import app.app.TouristApi.DTO.TouristInfoWithAccessibilityDTO;
 import app.app.TouristApi.Entity.AccessibleInfo;
+import app.app.TouristApi.Entity.TouristInfo;
 import app.app.TouristApi.Service.TouristApiService;
 import app.app.TouristApi.Service.TouristSpotService;  // TouristSpotService 추가
 import com.fasterxml.jackson.databind.JsonNode;
@@ -12,10 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/touristSpot/Json")
@@ -81,5 +80,38 @@ public class TouristController {
     }
 
 
+    // 새로운 무장애 관광지 정보 조회 API 추가
+    @GetMapping("/accessible-tourist-spots")
+    public ResponseEntity<List<TouristInfoDTO>> getAccessibleTouristSpots(
+            @RequestParam("region") String region,
+            @RequestParam("accessibleFeature") String accessibleFeature) {
+
+        try {
+            // TouristSpotService에서 무장애 관광지 정보를 가져옴
+            List<TouristInfo> accessibleSpots = touristSpotService.getAccessibleTouristSpots(region, accessibleFeature);
+            List<TouristInfoDTO> touristInfoDTOList = new ArrayList<>();
+
+            // TouristInfo 엔티티를 TouristInfoDTO로 변환
+            for (TouristInfo spot : accessibleSpots) {
+                TouristInfoDTO dto = new TouristInfoDTO();
+                dto.setContentId(spot.getContentId());
+                dto.setTitle(spot.getTitle());
+                dto.setAreaCode(spot.getAreaCode());
+                dto.setAddr1(spot.getAddr1());
+                dto.setFirstImage(spot.getFirstImage());
+                dto.setContentTypeId(spot.getContentTypeId()); // 콘텐츠 타입 ID 추가
+                dto.setMapX(spot.getMapx() != null ? spot.getMapx().toString() : null); // 지도 X좌표 추가
+                dto.setMapY(spot.getMapy() != null ? spot.getMapy().toString() : null); // 지도 Y좌표 추가
+
+
+                touristInfoDTOList.add(dto);
+            }
+
+            return ResponseEntity.ok(touristInfoDTOList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
 }

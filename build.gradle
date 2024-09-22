@@ -39,7 +39,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework:spring-oxm:6.1.0'
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
-
+	runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 
 }
 

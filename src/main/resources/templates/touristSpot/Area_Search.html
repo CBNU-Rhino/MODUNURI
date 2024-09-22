@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지역별 관광지 찾기</title>
+    <title>MODUNURI</title>
     <link rel="stylesheet" href="/css/Area_Search.css">
 
 </head>
@@ -17,28 +17,26 @@
             <span class="a">MODUNURI</span>
         </a>
     </div>
-    <form class="search-container" action="/search" method="GET">
-        <input type="text" placeholder="Search..." class="search-input" name="query">
-    </form>
 
     <nav>
         <ul class="nav-links">
             <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
             <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
-            <li><a href="#" id="community-link">지도 보기</a></li>
-            <li><a href="#">여행 기록하기</a></li>
+            <li><a href="/touristSpot/map" id="community-link">지도 보기</a></li>
+            <li><a href="/touristSpot/travelplan">여행 기록하기</a></li>
+            <li><a href="/community">커뮤니티</a></li>
             <!-- 로그인 상태 확인 -->
             <li class="nav-item-right">
-                <span th:if="${username != null}">
-                    <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
-                    <a href="/users/mypage" class="auth-button">MyPage</a> <!-- My Page 버튼 추가 -->
-                    <a href="/users/logout" class="auth-button">Logout</a>
-                </span>
+        <span th:if="${username != null}">
+        <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
+        <a href="/users/mypage" class="auth-button">MyPage</a>
+        <a href="/users/logout" class="auth-button">Logout</a>
+        </span>
                 <span th:if="${username == null}">
-                    <a class="login-message" th:text="'로그인을 해주세요'"></a>
-                    <a href="/users/signup" class="auth-button">SignUp</a>
-                    <a href="/users/login" class="auth-button">Log In</a> <!-- Log In 버튼 추가 -->
-                </span>
+        <a class="login-message">로그인을 해주세요</a>
+        <a href="/users/signup" class="auth-button">SignUp</a>
+        <a href="/users/login" class="auth-button">Log In</a>
+    </span>
             </li>
         </ul>
     </nav>
@@ -119,7 +117,7 @@
 <footer class="footer">
     <div class="footer-links">
         <ul>
-            <li><p>(주)코뿔소코퍼레이션</p></li>
+            <li><p>&copy; 2024 MODUNURI</p></li>
 
         </ul>
     </div>

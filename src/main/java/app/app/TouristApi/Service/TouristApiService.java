@@ -97,7 +97,7 @@ public class TouristApiService {
     public String getTouristDataByRegionAndSigungu(int contentTypeId, String regionName, String sigunguName) {
         int regionCode = getRegionCodeByRegionName(regionName);
         String sigunguCode = getSigunguCode(regionCode, sigunguName);
-
+        System.out.println(sigunguCode);
         if (regionCode == -1) {
             logger.error("Invalid region name: " + regionName);
             return null;
@@ -127,6 +127,8 @@ public class TouristApiService {
                 return 6;
             case "울산광역시":
                 return 7;
+            case "세종특별자치시":
+                return 8;
             case "경기도":
                 return 31;
             case "강원도":
@@ -143,7 +145,7 @@ public class TouristApiService {
                 return 37;
             case "전라남도":
                 return 38;
-            case "제주도":
+            case "제주특별자치도":
                 return 39;
             default:
                 return -1; // 유효하지 않은 지역명
@@ -300,4 +302,6 @@ public class TouristApiService {
             logger.error("Error saving accessibility info to database", e);
         }
     }
+
+
 }

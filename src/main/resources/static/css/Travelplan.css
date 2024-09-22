@@ -1,114 +1,697 @@
-
-/* Main content styles */
-.main-content {
-    text-align: center;
-    margin-top: 50px; /* 상단 여백 설정 */
-}
-
-.title-text {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.subtitle-text {
-    font-size: 18px;
-    color: #777;
-    margin-bottom: 30px;
-}
-
-/* Image styling */
-.centered-container {
+/* 공통 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F5FFF5;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column; /* 세로로 나열 */
-    align-items: center; /* 수평 가운데 정렬 */
-    justify-content: center; /* 수직 가운데 정렬 */
-    margin-top: 50px; /* 원하는 만큼 상단에 여백 추가 가능 */
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    color: #6C7A40;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+p {
+    color: #555;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 모든 페이지 컨테이너에 동일한 크기 적용 */
+.full-page {
+    display: none;
+    width: 80vw; /* 가로 크기를 뷰포트 너비의 80%로 설정 */
+    max-width: 1200px; /* 최대 가로 크기를 1200px로 제한 */
+    height: 650px; /* 세로 크기를 고정 */
+    margin: 50px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #D0D8C0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 컨텐츠를 중앙 정렬 */
+}
+
+.full-page:not(.hidden) {
+    display: block;
+}
+
+/* 이전 버튼 */
+.back-button-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.back-button {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.back-button:hover {
+    transform: scale(1.1);
+}
+
+/* 메인 페이지 */
+.centered-container {
+    text-align: center;
+    margin-top: 20px;
 }
 
 .center-image {
-    max-width: 600px; /* 이미지의 최대 너비 설정 */
-    height: auto; /* 비율 유지 */
-    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    margin: 0 auto;
 }
 
 .main-button {
-    margin-top: 50px; /* 이미지 하단과 버튼 사이의 거리 설정 */
-    padding: 10px 250px;
-    font-size: 16px;
     background-color: #4CAF50;
     color: white;
+    padding: 15px 30px;
     border: none;
     border-radius: 5px;
+    font-size: 18px;
     cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
 }
 
-.full-page {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
-    z-index: 1000;
-    padding: 20px;
+.main-button:hover {
+    background-color: #3E8E41;
 }
 
-.hidden {
-    display: none;
-}
-
-.modal-btn {
-    display: block;
-    margin: 10px auto;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-.duration-buttons {
-    display: center;
-    flex-wrap: wrap;
+/* 여행 기간, 지역, 무장애 선택 페이지 */
+.map-container {
+    position: relative;
+    width: 60%; /* 지도 크기 고정 */
+    max-width: 800px; /* 지도의 최대 너비 고정 */
+    height: auto;
+    margin: 0 auto; /* 지도 컨테이너를 수평 중앙에 정렬 */
+    display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 40px;
-    max-width: 500px; /* 컨테이너의 최대 너비를 설정하여 버튼이 줄을 넘도록 설정 */
+    align-items: center;
 }
 
-.duration-btn {
+.korea-map {
+    width: 65%; /* 지도 크기를 부모 컨테이너에 맞춤 */
+    height: auto; /* 높이는 자동으로 설정 */
+}
+
+.circle {
+    position: absolute;
+    width: 5vw; /* 뷰포트 너비의 8%로 동그라미 크기 설정 */
+    height: 5vw;
+    border-radius: 50%;
+    background-color: rgba(0, 123, 255, 0.5); /* 반투명한 파란색 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease; /* 부드러운 크기 전환 효과 */
+    flex-direction: column; /* 텍스트와 숫자를 세로로 배치 */
+    transform: translate(-50%, -50%); /* 동그라미의 중심을 기준으로 배치 */
+    text-align: center;
+}
+
+/* 동그라미에 마우스를 올렸을 때 */
+.circle:hover {
+    transform: translate(-50%, -50%) scale(1.1); /* 마우스를 올렸을 때 크기 살짝 확대 */
+}
+
+/* 권역별 위치 설정 */
+.region-seoul {
+    top: 24%;
+    left: 43%;
+}
+
+.region-chungcheong {
+    top: 42%;
+    left: 45%;
+}
+
+.region-gangwon {
+    top: 23%;
+    left: 58%;
+}
+
+.region-jeolla {
+    top: 65%;
+    left: 43%;
+}
+
+.region-gyeongsang {
+    top: 55%;
+    left: 58%;
+}
+
+.region-jeju {
+    top: 90%;
+    left: 36%;
+}
+
+/* '다음' 버튼 고정 */
+.next-btn {
+    position: fixed; /* 버튼을 화면 하단에 고정 */
+    bottom: 30px; /* 화면 하단에서 30px 위에 위치 */
+    left: 50%;
+    transform: translateX(-50%); /* 중앙에 위치하도록 조정 */
+    background-color: #89B873;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer; /* region-btn과 동일하게 커서를 설정 */
+    z-index: 100; /* 버튼을 화면 상단에 위치시키기 위해 z-index를 높게 설정 */
+    transition: background-color 0.3s ease;
+}
+
+.next-btn.active {
+    cursor: pointer; /* active 상태에서도 동일한 커서 설정 */
+    background-color: #28a745;
+}
+
+/* 지역 버튼 스타일 */
+.region-buttons {
+    display: flex;
+    flex-wrap: wrap; /* 버튼을 여러 줄에 배치 가능하도록 설정 */
+    justify-content: center; /* 버튼을 가운데 정렬 */
+    gap: 20px; /* 버튼 간 간격을 조정 */
+    margin-bottom: 15px; /* 하단 여백 설정 */
+    margin-top: 60px;
+}
+
+.region-btn {
+    background-color: #f9f9f9;
+    color: #555;
+    padding: 10px 20px; /* 버튼 크기 */
+    border: 2px solid #D0D8C0;
+    border-radius: 50px; /* 둥근 원통형 버튼 만들기 */
+    font-size: 20px; /* 폰트 크기 설정 */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: calc(33.33% - 20px); /* 3개씩 배치되도록 설정 (간격 포함) */
+    max-width: 200px; /* 버튼의 최대 너비 제한 */
+    text-align: center; /* 버튼 내 텍스트 중앙 정렬 */
+    height: 50px; /* 버튼 높이 설정 */
+}
+
+/* 무장애 버튼 스타일 */
+
+.barrier-buttons {
+    display: flex;
+    flex-wrap: wrap; /* 버튼을 줄바꿈하여 배치 */
+    justify-content: center; /* 버튼을 가운데 정렬 */
+    gap: 10px; /* 버튼 사이의 간격 */
+    margin-bottom: 20px;
+}
+
+.barrier-btn {
+    background-color: #f9f9f9;
+    color: #555;
     padding: 10px 20px;
     margin: 5px;
-    border: 2px solid #ddd;
-    border-radius: 30px;
-    background-color: #f4f4f4;
-    color: #555;
+    margin-top: 30px; /* 상단 여백을 30px로 설정 */
+    border: 2px solid #D0D8C0;
+    border-radius: 50px;
     font-size: 16px;
     cursor: pointer;
-    min-width: 150px; /* 버튼의 최소 너비 설정 */
-    flex: 1 1 45%; /* flex 속성을 사용해 각 버튼이 동일한 크기로 2줄로 나열되게 함 */
-    box-sizing: border-box; /* 테두리를 포함한 전체 박스 크기 계산 */
+    transition: background-color 0.3s ease;
+    flex: 1 0 calc(33.33% - 20px); /* 한 줄에 3개씩 배치되도록 설정 */
+    text-align: center; /* 버튼 안의 텍스트를 중앙 정렬 */
 }
 
-.duration-btn:hover {
-    background-color: #e0e0e0;
-    border-color: #007bff;
-    color: #007bff;
+.region-btn:hover,
+.barrier-btn:hover {
+    background-color: #d9e8c7;
 }
 
-.next-btn {
-    padding: 10px 50px;
-    background-color: #007bff;
+/* 선택된 버튼 색상 */
+.selected-btn {
+    background-color: #89B873;
     color: white;
-    border: none;
-    border-radius: 20px;
-    font-size: 16px;
-    cursor: pointer;
 }
 
-.next-btn:hover {
-    background-color: #0056b3;
+/* 4번 페이지: 관광지 리스트 스타일 */
+.select-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.spot-item {
+    background-color: #f9f9f9;
+    border: 2px solid #BCC7A3;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 600px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.spot-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* 5번 페이지: 여행 계획 정리 페이지 */
+#sortable {
+    list-style-type: none;
+    padding: 0;
+}
+
+#sortable li {
+    background-color: #F3F8E6;
+    border: 2px solid #BCC7A3;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    cursor: move;
+    transition: background-color 0.3s ease;
+}
+
+#sortable li:hover {
+    background-color: #d9e8c7;
+}
+
+/* 여행 이름 입력 필드 스타일 */
+#tripName {
+    width: 100%;
+    max-width: 600px;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 2px solid #BCC7A3;
+    border-radius: 8px;
+    background-color: #F3F8E6;
+    color: #6C7A40;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .center-image {
+        width: 80%;
+    }
+
+    .korea-map {
+        width: 80%;
+    }
+
+    .duration-buttons,
+    .region-buttons,
+    .barrier-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .duration-btn,
+    .region-btn,
+    .barrier-btn {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    #tripName {
+        width: 90%;
+    }
+}
+.tourist-spot-box {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+#kakao-map {
+    width: 100%;
+    height: 400px;
+}
+/* 공통 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F5FFF5;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    color: #6C7A40;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+p {
+    color: #555;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 모든 페이지 컨테이너에 동일한 크기 적용 */
+.full-page {
+    display: none;
+    width: 80vw; /* 가로 크기를 뷰포트 너비의 80%로 설정 */
+    max-width: 1200px; /* 최대 가로 크기를 1200px로 제한 */
+    height: 650px; /* 세로 크기를 고정 */
+    margin: 50px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #D0D8C0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 컨텐츠를 중앙 정렬 */
+}
+
+.full-page:not(.hidden) {
+    display: block;
+}
+
+/* 이전 버튼 */
+.back-button-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.back-button {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.back-button:hover {
+    transform: scale(1.1);
+}
+
+/* 메인 페이지 */
+.centered-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.center-image {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.main-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.main-button:hover {
+    background-color: #3E8E41;
+}
+
+/* 여행 기간, 지역, 무장애 선택 페이지 */
+.map-container {
+    position: relative;
+    width: 60%; /* 지도 크기 고정 */
+    max-width: 800px; /* 지도의 최대 너비 고정 */
+    height: auto;
+    margin: 0 auto; /* 지도 컨테이너를 수평 중앙에 정렬 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.korea-map {
+    width: 65%; /* 지도 크기를 부모 컨테이너에 맞춤 */
+    height: auto; /* 높이는 자동으로 설정 */
+}
+
+.circle {
+    position: absolute;
+    width: 5vw; /* 뷰포트 너비의 8%로 동그라미 크기 설정 */
+    height: 5vw;
+    border-radius: 50%;
+    background-color: rgba(0, 123, 255, 0.5); /* 반투명한 파란색 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease; /* 부드러운 크기 전환 효과 */
+    flex-direction: column; /* 텍스트와 숫자를 세로로 배치 */
+    transform: translate(-50%, -50%); /* 동그라미의 중심을 기준으로 배치 */
+    text-align: center;
+}
+
+/* 동그라미에 마우스를 올렸을 때 */
+.circle:hover {
+    transform: translate(-50%, -50%) scale(1.1); /* 마우스를 올렸을 때 크기 살짝 확대 */
+}
+
+/* 권역별 위치 설정 */
+.region-seoul {
+    top: 24%;
+    left: 43%;
+}
+
+.region-chungcheong {
+    top: 42%;
+    left: 45%;
+}
+
+.region-gangwon {
+    top: 23%;
+    left: 58%;
+}
+
+.region-jeolla {
+    top: 65%;
+    left: 43%;
+}
+
+.region-gyeongsang {
+    top: 55%;
+    left: 58%;
+}
+
+.region-jeju {
+    top: 90%;
+    left: 36%;
+}
+
+/* '다음' 버튼 고정 */
+.next-btn {
+    position: fixed; /* 버튼을 화면 하단에 고정 */
+    bottom: 30px; /* 화면 하단에서 30px 위에 위치 */
+    left: 50%;
+    transform: translateX(-50%); /* 중앙에 위치하도록 조정 */
+    background-color: #89B873;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer; /* region-btn과 동일하게 커서를 설정 */
+    z-index: 100; /* 버튼을 화면 상단에 위치시키기 위해 z-index를 높게 설정 */
+    transition: background-color 0.3s ease;
+}
+
+.next-btn.active {
+    cursor: pointer; /* active 상태에서도 동일한 커서 설정 */
+    background-color: #28a745;
+}
+
+/* 지역 버튼 스타일 */
+.region-buttons {
+    display: flex;
+    flex-wrap: wrap; /* 버튼을 여러 줄에 배치 가능하도록 설정 */
+    justify-content: center; /* 버튼을 가운데 정렬 */
+    gap: 20px; /* 버튼 간 간격을 조정 */
+    margin-bottom: 15px; /* 하단 여백 설정 */
+    margin-top: 60px;
+}
+
+.region-btn {
+    background-color: #f9f9f9;
+    color: #555;
+    padding: 10px 20px; /* 버튼 크기 */
+    border: 2px solid #D0D8C0;
+    border-radius: 50px; /* 둥근 원통형 버튼 만들기 */
+    font-size: 20px; /* 폰트 크기 설정 */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: calc(33.33% - 20px); /* 3개씩 배치되도록 설정 (간격 포함) */
+    max-width: 200px; /* 버튼의 최대 너비 제한 */
+    text-align: center; /* 버튼 내 텍스트 중앙 정렬 */
+    height: 50px; /* 버튼 높이 설정 */
+}
+
+/* 무장애 버튼 스타일 */
+
+.barrier-buttons {
+    display: flex;
+    flex-wrap: wrap; /* 버튼을 줄바꿈하여 배치 */
+    justify-content: center; /* 버튼을 가운데 정렬 */
+    gap: 10px; /* 버튼 사이의 간격 */
+    margin-bottom: 20px;
+}
+
+.barrier-btn {
+    background-color: #f9f9f9;
+    color: #555;
+    padding: 10px 20px;
+    margin: 5px;
+    margin-top: 30px; /* 상단 여백을 30px로 설정 */
+    border: 2px solid #D0D8C0;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex: 1 0 calc(33.33% - 20px); /* 한 줄에 3개씩 배치되도록 설정 */
+    text-align: center; /* 버튼 안의 텍스트를 중앙 정렬 */
+}
+
+.region-btn:hover,
+.barrier-btn:hover {
+    background-color: #d9e8c7;
+}
+
+/* 선택된 버튼 색상 */
+.selected-btn {
+    background-color: #89B873;
+    color: white;
+}
+
+/* 4번 페이지: 관광지 리스트 스타일 */
+.select-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.spot-item {
+    background-color: #f9f9f9;
+    border: 2px solid #BCC7A3;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 600px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.spot-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* 5번 페이지: 여행 계획 정리 페이지 */
+#sortable {
+    list-style-type: none;
+    padding: 0;
+}
+
+#sortable li {
+    background-color: #F3F8E6;
+    border: 2px solid #BCC7A3;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    cursor: move;
+    transition: background-color 0.3s ease;
+}
+
+#sortable li:hover {
+    background-color: #d9e8c7;
+}
+
+/* 여행 이름 입력 필드 스타일 */
+#tripName {
+    width: 100%;
+    max-width: 600px;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 2px solid #BCC7A3;
+    border-radius: 8px;
+    background-color: #F3F8E6;
+    color: #6C7A40;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .center-image {
+        width: 80%;
+    }
+
+    .korea-map {
+        width: 80%;
+    }
+
+    .duration-buttons,
+    .region-buttons,
+    .barrier-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .duration-btn,
+    .region-btn,
+    .barrier-btn {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    #tripName {
+        width: 90%;
+    }
+}
+.tourist-spot-box {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+#kakao-map {
+    width: 100%; /* 원하는 너비 설정 */
+    height: 400px; /* 높이를 적절하게 설정 */
+    z-index: 10; /* 다른 요소보다 위에 오도록 설정 */
 }
