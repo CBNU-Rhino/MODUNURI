@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>관광지 상세 정보</title>
+    <link rel="icon" href="/images/Favicon.png" type="image/png"> <!-- 이미지 경로를 수정하세요 -->
+    <title>MODUNURI</title>
     <link rel="stylesheet" href="/css/searchresult.css">
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9795bab39c2cc262f3aec7f26ec16196&libraries=services"></script>
 </head>
 <body>
-
 <!-- Header Section -->
 <header class="navbar">
     <div class="logo">
@@ -22,20 +22,20 @@
         <ul class="nav-links">
             <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
             <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
-            <li><a href="/touristSpot/map" id="community-link">지도 보기</a></li>
+            <li><a href="/touristSpot/map">지도 보기</a></li>
             <li><a href="/touristSpot/travelplan">여행 기록하기</a></li>
-            <li><a href="/community">커뮤니티</a></li>
+            <li><a href="/community" id="community-link">커뮤니티</a></li>
             <!-- 로그인 상태 확인 -->
             <li class="nav-item-right">
         <span th:if="${username != null}">
         <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
-        <a href="/users/mypage" class="auth-button">MyPage</a>
-        <a href="/users/logout" class="auth-button">Logout</a>
+        <a href="/users/mypage" class="auth-mypage">마이페이지</a>
+        <a href="/users/logout" class="auth-button">로그아웃</a>
         </span>
                 <span th:if="${username == null}">
         <a class="login-message">로그인을 해주세요</a>
-        <a href="/users/signup" class="auth-button">SignUp</a>
-        <a href="/users/login" class="auth-button">Log In</a>
+        <a href="/users/signup" class="auth-button">회원가입</a>
+        <a href="/users/login" class="auth-button">로그인</a>
     </span>
             </li>
         </ul>
@@ -82,23 +82,25 @@
     <div class="block blog-posts-block">
         <h3>블로그 후기</h3>
         <hr class="hr-line">
-        <ul id="blog-posts"></ul>
+        <!-- 블로그 포스팅을 감싸는 블록 -->
+        <ul id="blog-posts" class="blog-posts-container"></ul>
     </div>
 </div>
 
+<!-- Footer Section -->
 <footer class="footer">
     <div class="footer-links">
         <ul>
-            <li><p>(주)코뿔소코퍼레이션</p></li>
+            <li><p>&copy; 2024 MODUNURI</p></li>
+
         </ul>
     </div>
 </footer>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const contentid = urlParams.get('contentid');
-    const contenttypeid = urlParams.get('contenttypeid');
-
+    const contentId = urlParams.get('contentId');
+    const contentTypeId = urlParams.get('contentTypeId');
 
     if (!contentId || !contentTypeId) {
         document.getElementById('tourist-spot-info').innerHTML = '<p>유효하지 않은 관광지입니다.</p>';
@@ -146,7 +148,8 @@
                     elevator: '/icons/elevator_icon.png',
                     stroller: '/icons/babystroller_icon.png',
                     wheelchair: '/icons/wheelchair_icon.png',
-                    parking: '/icons/parking_icon.png'
+                    parking: '/icons/parking_icon.png',
+                    blindhandicapetc: '/icons/blind_icon.png'
                 };
 
                 const noInfoIcons = {
@@ -157,7 +160,8 @@
                     elevator: '/icons/no_elevator_icon.png',
                     stroller: '/icons/no_babystroller_icon.png',
                     wheelchair: '/icons/no_wheelchair_icon.png',
-                    parking: '/icons/no_parking_icon.png'
+                    parking: '/icons/no_parking_icon.png',
+                    blindhandicapetc: '/icons/no_blind_icon.png'
                 };
 
                 Object.keys(iconMapping).forEach(key => {
@@ -253,14 +257,14 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                contentId: contentid,
-                contentTypeId: contenttypeid
+                contentId: contentId,
+                contentTypeId: contentTypeId
             })
         })
             .then(response => {
                 if (response.ok) {
                     alert('저장이 완료되었습니다!');
-                    saveButton.textContent = '저장된 관광지';
+                    saveButton.textContent = '저장됨';
                     saveButton.disabled = true;
                     saveButton.style.backgroundColor = '#4CAF50';
                     saveIcon.src = '/icons/saved_icon.png';
@@ -307,7 +311,7 @@
                 const saveIcon = document.getElementById('save-icon');
 
                 if (isSaved) {
-                    saveButton.textContent = '저장된 관광지';
+                    saveButton.textContent = '저장됨';
                     saveButton.disabled = true;
                     saveButton.style.backgroundColor = '#4CAF50';
                     saveIcon.src = '/icons/saved_icon.png';

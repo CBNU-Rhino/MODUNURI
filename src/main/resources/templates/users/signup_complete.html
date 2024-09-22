@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/Favicon.png" type="image/png"> <!-- 이미지 경로를 수정하세요 -->
     <title>Sign Up Complete</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-
 </head>
+
 <body>
+<!-- Header Section -->
+<header class="navbar">
+    <div class="logo">
+        <a href="/"> <!-- 로고 클릭 시 index.html로 이동 -->
+            <img src="/images/MODUNURI.png" class="logo img"> <!-- 이미지 추가 -->
+            <span class="a">MODUNURI</span>
+        </a>
+    </div>
+</header>
 
 <div class="back-container">
-    <div class="content-container">
-        <div class="login-container">
+    <div class="complete-container">
             <h1>회원가입이 완료되었습니다!</h1>
             <p>계속하려면 아래 버튼을 클릭하세요.</p>
-            <a href="/" class="login-button">메인으로 돌아가기</a>
-        </div>
+            <a href="/" class="complete-button">메인으로 돌아가기</a>
     </div>
 </div>
 

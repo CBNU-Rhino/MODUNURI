@@ -22,20 +22,20 @@
         <ul class="nav-links">
             <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
             <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
-            <li><a href="/touristSpot/map" id="community-link">지도 보기</a></li>
+            <li><a href="/touristSpot/map">지도 보기</a></li>
             <li><a href="/touristSpot/travelplan">여행 기록하기</a></li>
-            <li><a href="/community">커뮤니티</a></li>
+            <li><a href="/community" id="community-link">커뮤니티</a></li>
             <!-- 로그인 상태 확인 -->
             <li class="nav-item-right">
         <span th:if="${username != null}">
         <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
-        <a href="/users/mypage" class="auth-button">MyPage</a>
-        <a href="/users/logout" class="auth-button">Logout</a>
+        <a href="/users/mypage" class="auth-mypage">마이페이지</a>
+        <a href="/users/logout" class="auth-button">로그아웃</a>
         </span>
                 <span th:if="${username == null}">
         <a class="login-message">로그인을 해주세요</a>
-        <a href="/users/signup" class="auth-button">SignUp</a>
-        <a href="/users/login" class="auth-button">Log In</a>
+        <a href="/users/signup" class="auth-button">회원가입</a>
+        <a href="/users/login" class="auth-button">로그인</a>
     </span>
             </li>
         </ul>
@@ -88,7 +88,7 @@
                 <option value="stroller">유아차</option>
                 <option value="elevator">엘리베이터</option>
                 <option value="braille_block">점자블록</option>
-                <option value="help_dog">도우미견</option> // 안내견 or 도우미견 중 선택 -> 통일
+                <option value="help_dog">안내견</option> // 안내견 or 도우미견 중 선택 -> 통일
                 <option value="blind_handicap_etc">시각장애인 편의시설</option> // 이름 추후 수정
             </select>
         </div>
@@ -98,8 +98,6 @@
     <div class="checkbox-container">
         <label><input type="radio" name="category" value="12"> 관광지</label>
         <label><input type="radio" name="category" value="14"> 문화시설</label>
-        <label><input type="radio" name="category" value="15"> 축제공연행사</label>
-        <label><input type="radio" name="category" value="25"> 여행코스</label>
         <label><input type="radio" name="category" value="28"> 레포츠</label>
         <label><input type="radio" name="category" value="32"> 숙박</label>
         <label><input type="radio" name="category" value="38"> 쇼핑</label>

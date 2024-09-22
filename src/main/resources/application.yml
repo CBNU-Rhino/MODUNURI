@@ -65,14 +65,12 @@ spring:
 
 logging:
   level:
-    app.app.TouristApi.Service: DEBUG
     org:
       springframework:
         security: DEBUG
         web:
           authentication: DEBUG
           access: DEBUG
-
 server:
   servlet:
     encoding:

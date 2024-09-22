@@ -40,7 +40,7 @@ html, body {
     font-size: 24px;
     font-weight: 900;
     text-decoration: none;
-
+    margin-top: 5px;
 }
 
 .nav-links {
@@ -68,7 +68,7 @@ html, body {
     text-decoration: underline; /* 호버 시 밑줄 추가 */
     font-weight: bold; /* 호버 시 글씨 굵게 */
     color: #45a049; /* 호버 시 글씨 색 변경 */
-    font-size: 18px; /* 호버 시 글씨 크기 증가 */
+    font-size: 17px; /* 호버 시 글씨 크기 증가 */
 }
 
 .login-message {
@@ -77,7 +77,6 @@ html, body {
     margin-left: 40px;
     margin-right: 15px; /* 로그인 메시지와 회원가입 버튼 사이 간격 */
 }
-
 
 .nav-item {
     color: #fff;
@@ -95,8 +94,8 @@ html, body {
 /* 공통 버튼 스타일 */
 .auth-button {
     padding: 10px 20px;
-    background-color: rgba(148, 205, 147, 0.25);
-    color: #4CAF50 !important;
+    background-color: #89B873;
+    color: #F5FFF5 !important;
     text-decoration: none;
     border-radius: 10px;
     display: inline-block;
@@ -105,12 +104,31 @@ html, body {
     width: 100px; /* 동일한 너비 설정 */
     box-sizing: border-box;
     margin-left: 5px; /* 버튼 간격 조정 */
-    border: 2px solid #4CAF50; /* 초록색 테두리 */
 }
 
 .auth-button:hover {
-    background-color: #45a049;
+    background-color: #739c61;
     color: #F5FFF5 !important;
+}
+
+.auth-mypage {
+    padding: 10px 20px;
+    background-color: #89B873;
+    color: #F5FFF5 !important;
+    text-decoration: none;
+    border-radius: 10px;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    width: 110px; /* 동일한 너비 설정 */
+    box-sizing: border-box;
+    margin-left: 5px; /* 버튼 간격 조정 */
+}
+
+.auth-mypage:hover {
+    background-color: #739c61;
+    color: #F5FFF5 !important;
+    font-size: 16px !important;
 }
 
 .nav-item-right {
@@ -118,13 +136,13 @@ html, body {
 }
 
 .container {
-    max-width: 1200px;
-    margin: 100px auto 50px; /* 상단에 100px의 여백을 추가하여 배너와 겹치지 않도록 설정 */
-    background-color: #e1fbdf;
+    width: 70%;
+    margin: 100px auto; /* 중앙 정렬 */
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-    border: 1px solid #D0D8C0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 400px; /* 최소 높이 설정 */
 }
 
 .header {
@@ -150,43 +168,6 @@ html, body {
     margin-right: 0;
 }
 
-.search-bar {
-    position: relative;
-    display: flex;
-    align-items: center;
-    border: 2px solid #b0c7a3;
-    border-radius: 8px;
-    background-color: #e1fbdf;
-    padding: 12px;
-    margin-bottom: 20px;
-}
-
-.search-bar input {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background-color: transparent;
-    font-size: 16px;
-    outline: none;
-    color: #e1fbdf;
-}
-
-.search-bar button {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.search-bar button img {
-    width: 20px;
-    height: 20px;
-    filter: invert(36%) sepia(6%) saturate(1999%) hue-rotate(69deg) brightness(93%) contrast(89%);
-}
-
 .location-filters {
     display: flex;
     justify-content: space-between;
@@ -195,7 +176,7 @@ html, body {
 .location-filters select {
     width: 30%;
     padding: 12px;
-    border: 2px solid #BCC7A3;
+    background-color: rgba(148, 205, 147, 0.25);
     border-radius: 8px;
     background-color: #F3F8E6;
     font-size: 16px;
@@ -218,32 +199,102 @@ html, body {
     color: #6C7A40;
 }
 
-.checkbox-container label input {
-    margin-right: 10px;
+input[type="radio"] {
+    display: none;
 }
 
+.checkbox-container label input {
+    margin-right: 10px;
+    display: none;
+}
+
+.custom-radio {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.radio-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f9f9f9; /* 기본 배경 색상 */
+    border-radius: 30px; /* 둥근 버튼 */
+    border: 2px solid #ddd; /* 테두리 색상 */
+    color: #555;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* 선택된 상태의 스타일 */
+input[type="radio"]:checked + .radio-btn {
+    background-color: #89B873; /* 선택된 상태의 배경 색상 */
+    color: white; /* 선택된 상태의 글자 색상 */
+    border-color: #89B873; /* 선택된 상태의 테두리 색상 */
+}
+
+/* 호버 시 스타일 */
+.radio-btn:hover {
+    background-color: #e0e0e0; /* 호버 시 배경 색상 */
+    color: #555;
+}
+
+/* selected-area 정렬 */
 .selected-area {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* 검색 버튼과 초기화 버튼을 양 끝으로 배치 */
     align-items: center;
     margin-top: 20px;
     padding: 10px;
-    border-top: 2px solid #D0D8C0;
-    color: #6C7A40;
+    border-top: 2px solid rgba(148, 205, 147, 0.25);
+    color: #717171;
 }
 
-.selected-area button {
-    background-color: #C8D5A6;
-    border: 2px solid #A3AE79;
+/* 검색 버튼 컨테이너 */
+.search-btn-container {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    /* 페이지 전체 높이를 채워서 중앙에 위치하게 함 */
+}
+
+/* 검색 버튼 스타일 */
+.search-btn {
+    width: 20%; /* 컨테이너의 85% 비율로 설정 */
+    padding: 5px 0 !important;; /* 버튼의 상하 패딩을 줄임 */
+    background-color: #4CAF50; /* 초록색 배경 */
+    color: white; /* 흰색 텍스트 */
+    border: none; /* 테두리 제거 */
+    border-radius: 30px; /* 둥근 모서리 */
+    font-size: 16px; /* 폰트 크기 */
+    cursor: pointer; /* 마우스 포인터를 손 모양으로 변경 */
+    margin-bottom: 10px; /* 아래쪽 여백 추가 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    margin-top: 10px;
+}
+
+.search-btn:hover {
+    background-color: #45a049; /* 마우스 오버 시 배경색 변경 */
+}
+
+/* 초기화 버튼 스타일 */
+.reset-btn {
+    width: 12%;
+    align-items: center;  /* 이미지와 텍스트를 수직 가운데 정렬 */
+    padding: 10px 20px;
+    background-color: rgba(148, 205, 147, 0.25);
+    border: 2px solid rgba(148, 205, 147, 0.25);
     border-radius: 8px;
-    padding: 8px 16px;
     cursor: pointer;
-    color: #4C5A30;
+    color: #717171;
     font-size: 16px;
+    gap: 10px;  /* 이미지와 텍스트 사이에 간격 추가 */
 }
 
-.selected-area button:hover {
-    background-color: #B8C793;
+.reset-btn:hover {
+    background-color: rgba(148, 205, 147, 0.25);
 }
 
 .dropdown {
@@ -253,11 +304,11 @@ html, body {
 .dropdown select {
     width: 100%;
     padding: 10px;
-    border: 2px solid #BCC7A3;
+    border: 2px solid rgba(148, 205, 147, 0.25);
     border-radius: 8px;
-    background-color: #F3F8E6;
+    background-color: rgba(148, 205, 147, 0.25);
     font-size: 16px;
-    color: #6C7A40;
+    color: #717171;
 }
 
 .gallery {
@@ -269,12 +320,12 @@ html, body {
 }
 
 .gallery-item {
-    background-color: #F3F8E6;
-    border: 2px solid #BCC7A3;
+    background-color: rgba(148, 205, 147, 0.25);
+    border: 2px solid rgba(148, 205, 147, 0.25);
     border-radius: 12px;
     padding: 20px;
     text-align: center;
-    color: #6C7A40;
+    color: #717171;
     font-size: 18px;
 }
 
@@ -288,7 +339,7 @@ html, body {
 .gallery-item p {
     font-weight: bold;
     margin: 0;
-    color: #6C7A40;
+    color: #717171;
 }
 
 .pagination {
@@ -305,22 +356,22 @@ html, body {
     display: flex; /* 중앙 정렬을 위한 flex 설정 */
     align-items: center; /* 세로 중앙 정렬 */
     justify-content: center; /* 가로 중앙 정렬 */
-    background-color: #F3F8E6; /* 페이지 번호 배경색 */
-    border: 2px solid #BCC7A3; /* 경계선 설정 */
+    background-color: rgba(148, 205, 147, 0.25);
+    border: 2px solid rgba(148, 205, 147, 0.25); /* 경계선 설정 */
     border-radius: 8px; /* 모서리 둥글게 */
     margin: 0 5px;
-    color: #6C7A40;
+    color: #717171;
     font-size: 16px;
     text-align: center;
     cursor: pointer;
 }
 
 .page-number:hover, .page-arrow:hover {
-    background-color: #E6F2D9; /* 마우스 오버 시 배경색 변경 */
+    background-color: rgba(148, 205, 147, 0.25); /* 마우스 오버 시 배경색 변경 */
 }
 
 .page-number.active {
-    background-color: #A3AE79;
+    background-color: rgba(148, 205, 147, 0.25);
     color: white;
 }
 
@@ -330,17 +381,6 @@ html, body {
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* 최소 높이를 100% 뷰포트 높이로 설정 */
-}
-
-/* Footer */
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* 뷰포트 전체 높이를 차지 */
-}
-
-.content {
-    flex: 1; /* 페이지 내용이 없을 때도 남은 공간을 차지하여 푸터를 아래로 밀어냄 */
 }
 
 .footer {

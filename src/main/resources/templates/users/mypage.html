@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MODUNURI</title>
+    <link rel="icon" href="/images/Favicon.png" type="image/png"> <!-- 이미지 경로를 수정하세요 -->
+    <title>마이페이지</title>
     <link rel="stylesheet" href="/css/mypage.css">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9795bab39c2cc262f3aec7f26ec16196&libraries=services,drawing"></script>
 </head>
 <body>
 <!-- Header Section -->
@@ -27,13 +29,13 @@
             <li class="nav-item-right">
         <span th:if="${username != null}">
         <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
-        <a href="/users/mypage" class="auth-button">MyPage</a>
-        <a href="/users/logout" class="auth-button">Logout</a>
+        <a href="/users/mypage" class="auth-mypage">마이페이지</a>
+        <a href="/users/logout" class="auth-button">로그아웃</a>
         </span>
                 <span th:if="${username == null}">
         <a class="login-message">로그인을 해주세요</a>
-        <a href="/users/signup" class="auth-button">SignUp</a>
-        <a href="/users/login" class="auth-button">Log In</a>
+        <a href="/users/signup" class="auth-button">회원가입</a>
+        <a href="/users/login" class="auth-button">로그인</a>
     </span>
             </li>
         </ul>
@@ -51,6 +53,7 @@
                 <img src="/images/travelers.png" alt="Profile Image" class="profile-img">
                 <div class="profile-info">
                     <p><strong>Username:</strong> <span th:text="${username}"></span></p>
+                    <p><strong>Email:</strong> johndoe@example.com</p> <!-- 예시 이메일, 필요 시 서버 데이터와 연동 -->
                 </div>
             </div>
         </section>
@@ -68,8 +71,30 @@
                 <p id="no-places-message" style="display: none; color: #777; text-align: center;">관광지를 저장해보세요</p>
             </ul>
         </section>
+        <!-- 관심 관광지 목록 아래에 유저의 저장된 코스 목록 추가 -->
+        <section class="block saved-courses">
+            <h2 th:text="${username} + '님이 저장한 코스 목록'">Your Saved Courses</h2>
+            <hr class="divider"> <!-- 구분선 추가 -->
+            <ul id="saved-courses" class="saved-courses">
+                <!-- 코스 목록이 동적으로 추가됩니다 -->
+            </ul>
+            <!-- 빈 목록일 때 보여줄 메시지 -->
+            <p id="no-courses-message" style="display: none; color: #777; text-align: center;">코스를 저장해보세요</p>
+        </section>
     </div>
 </main>
+<!-- Modal Section -->
+<div id="course-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-course-name">코스 이름</h2>
+        <!-- 카카오맵을 표시할 div -->
+        <div id="modal-map" style="width:100%; height:400px;"></div>
+    </div>
+</div>
+
+<!-- 빈 공간을 확보하기 위한 컨테이너 -->
+<div class="footer-space"></div>
 
 <!-- Footer Section -->
 <footer class="footer">
@@ -84,6 +109,7 @@
 <script>
     window.addEventListener('DOMContentLoaded', (event) => {
         loadSavedPlaces(); // 페이지가 로드될 때 관심 관광지 목록 불러오기
+        loadSavedCourses(); // 저장된 코스 불러오기
     });
 
     function loadSavedPlaces() {
@@ -135,7 +161,7 @@
                 <!-- 동기식 폼을 이용한 삭제 버튼 -->
                 <form action="/users/removeFavorite" method="POST">
                     <input type="hidden" name="contentId" value="${touristDetail.contentid}">
-                    <button type="submit" class="remove-button">지우기</button>
+                    <button type="submit" class="auth-button">지우기</button>
                 </form>
             </div>
         </div>
@@ -143,6 +169,208 @@
 
         savedPlaces.appendChild(placeBox);
     }
+    function loadSavedCourses() {
+        fetch('/courses/courses/get')
+            .then(response => response.json())
+            .then(courseData => {
+                const savedCourses = document.querySelector('#saved-courses');
+                const noCoursesMessage = document.querySelector('#no-courses-message');
+                savedCourses.innerHTML = ''; // 기존 목록을 초기화
+
+                if (courseData.length === 0) {
+                    noCoursesMessage.style.display = 'block'; // 빈 목록일 때 메시지 표시
+                } else {
+                    noCoursesMessage.style.display = 'none'; // 목록이 있을 때 메시지 숨김
+                    courseData.forEach(course => {
+                        displaySavedCourse(course); // 각 코스에 대해 displaySavedCourse 호출
+                    });
+                }
+            })
+            .catch(error => console.error('Error loading saved courses:', error));
+    }
+
+    function displaySavedCourse(course) {
+        const savedCourses = document.querySelector('#saved-courses');
+        const courseBox = document.createElement('div');
+        courseBox.classList.add('course-box');
+        courseBox.id = `course-${course.id}`;
+
+        // 코스 클릭 시 모달 창 열기 및 경로 표시
+        courseBox.addEventListener('click', async () => {
+            openModal(course.courseName); // 코스 이름으로 모달을 엽니다.
+
+            // 관광지 경로 그리기
+            await drawCarRoute(course.contentInfos);
+        });
+
+        const courseName = course.courseName || "코스 이름 없음";
+        const contentCount = course.contentInfos.length;
+
+        courseBox.innerHTML = `
+        <div class="course-info">
+            <h4>${courseName}</h4>
+            <p>포함된 관광지 수: ${contentCount}</p>
+            <!-- 동기식 폼을 이용한 삭제 버튼 -->
+            <form action="/courses/remove" method="POST">
+                <input type="hidden" name="courseId" value="${course.id}">
+                <button type="submit" class="remove-button">코스 삭제</button>
+            </form>
+        </div>
+    `;
+
+        savedCourses.appendChild(courseBox);
+    }
+
+    async function drawCarRoute(contentInfos) {
+        const REST_API_KEY = '9e7786142c02ceecc7551f66b0d94383';
+        const url = 'https://apis-navi.kakaomobility.com/v1/directions';
+        const fullLinePath = [];
+        const mapContainer = document.getElementById('modal-map');
+
+        // contentInfos 배열 안에서 관광지 좌표 (mapx, mapy) 추출
+        const touristCoords = [];
+        for (const contentInfo of contentInfos) {
+            const touristDetail = await getTouristInfo(contentInfo.contentId, contentInfo.contentTypeId);
+            if (touristDetail) {
+                touristCoords.push({
+                    mapx: touristDetail.mapx,
+                    mapy: touristDetail.mapy,
+                    title: touristDetail.title // 관광지 이름도 저장
+                });
+            }
+        }
+
+        // 카카오맵 초기화: 첫 번째 관광지 좌표로 지도 중심 설정
+        const mapOption = {
+            center: new kakao.maps.LatLng(touristCoords[0].mapy, touristCoords[0].mapx),
+            level: 7
+        };
+        const map = new kakao.maps.Map(mapContainer, mapOption);
+
+        // 관광지 마커 및 경로 그리기
+        for (let i = 0; i < touristCoords.length; i++) {
+            const coord = touristCoords[i];
+
+            // 마커 생성
+            const markerPosition = new kakao.maps.LatLng(coord.mapy, coord.mapx);
+            const marker = new kakao.maps.Marker({
+                position: markerPosition
+            });
+
+            // 마커를 지도 위에 표시
+            marker.setMap(map);
+
+            // 마커에 관광지 이름을 표시하는 인포윈도우 추가
+            const infowindow = new kakao.maps.InfoWindow({
+                content: `<div style="padding:10px; font-size:14px; font-weight:bold;">${coord.title}</div>`, // 패딩 및 폰트 크기 조정
+                removable: true  // 인포윈도우를 닫을 수 있도록 설정
+            });
+
+            // 마커가 생성되면 자동으로 인포윈도우가 열리도록 설정
+            infowindow.open(map, marker);
+
+            // 마커에 마우스를 올리면 인포윈도우 표시
+            kakao.maps.event.addListener(marker, 'mouseover', () => {
+                infowindow.open(map, marker);
+            });
+
+            // 마커에서 마우스를 내리면 인포윈도우 닫기
+            kakao.maps.event.addListener(marker, 'mouseout', () => {
+                infowindow.close();
+            });
+
+            // 경로가 있다면, 경로 데이터를 가져와 지도에 경로 표시
+            if (i < touristCoords.length - 1) {
+                const origin = `${touristCoords[i].mapx},${touristCoords[i].mapy}`;
+                const destination = `${touristCoords[i + 1].mapx},${touristCoords[i + 1].mapy}`;
+
+                const queryParams = new URLSearchParams({
+                    origin: origin,
+                    destination: destination
+                });
+
+                const headers = {
+                    Authorization: `KakaoAK ${REST_API_KEY}`,
+                    'Content-Type': 'application/json'
+                };
+
+                const requestUrl = `${url}?${queryParams}`;
+
+                try {
+                    const response = await fetch(requestUrl, {
+                        method: 'GET',
+                        headers: headers
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    data.routes[0].sections[0].roads.forEach(road => {
+                        road.vertexes.forEach((vertex, index) => {
+                            if (index % 2 === 0) {
+                                fullLinePath.push(new kakao.maps.LatLng(road.vertexes[index + 1], road.vertexes[index]));
+                            }
+                        });
+                    });
+                } catch (error) {
+                    console.error('오류 발생:', error);
+                }
+            }
+        }
+
+        // 경로를 지도에 표시
+        const polyline = new kakao.maps.Polyline({
+            path: fullLinePath,
+            strokeWeight: 5,
+            strokeColor: '#00AFFF',
+            strokeOpacity: 0.8,
+            strokeStyle: 'solid'
+        });
+        polyline.setMap(map);
+    }
+
+    function openModal(courseName) {
+        const modal = document.getElementById("course-modal");
+        const modalCourseName = document.getElementById("modal-course-name");
+        modalCourseName.textContent = courseName;
+        modal.style.display = "block";
+
+        // 카카오맵의 레이아웃을 다시 계산하여 올바르게 표시되도록 함
+        setTimeout(() => {
+            const mapContainer = document.getElementById('modal-map');
+            const mapOption = {
+                center: new kakao.maps.LatLng(37.5665, 126.9780),  // 초기 중심좌표 (임시로 설정)
+                level: 7
+            };
+            const map = new kakao.maps.Map(mapContainer, mapOption);
+            map.relayout();  // 지도 리사이즈 처리
+        }, 100);  // 100ms 지연 후 실행
+    }
+
+
+    document.querySelector('.close').addEventListener('click', function () {
+        document.getElementById("course-modal").style.display = "none";
+    });
+
+    window.addEventListener('click', function (event) {
+        const modal = document.getElementById("course-modal");
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+    async function getTouristInfo(contentId, contentTypeId) {
+        try {
+            const response = await fetch(`/touristSpot/Json/tourist-information?contentId=${contentId}&contentTypeId=${contentTypeId}`);
+            const data = await response.json();
+            return data.touristDetail;
+        } catch (error) {
+            console.error("관광지 정보 불러오기 실패:", error);
+            return null;
+        }
+    }
+
 </script>
 
 </body>

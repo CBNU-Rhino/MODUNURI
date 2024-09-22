@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MODUNURI</title>
+    <link rel="icon" href="/images/Favicon.png" type="image/png"> <!-- 이미지 경로를 수정하세요 -->
+    <title>모두누리</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
@@ -20,20 +21,20 @@
         <ul class="nav-links">
             <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
             <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
-            <li><a href="/touristSpot/map" id="community-link">지도 보기</a></li>
+            <li><a href="/touristSpot/map">지도 보기</a></li>
             <li><a href="/touristSpot/travelplan">여행 기록하기</a></li>
             <li><a href="/community">커뮤니티</a></li>
             <!-- 로그인 상태 확인 -->
             <li class="nav-item-right">
         <span th:if="${username != null}">
         <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
-        <a href="/users/mypage" class="auth-button">MyPage</a>
-        <a href="/users/logout" class="auth-button">Logout</a>
+        <a href="/users/mypage" class="auth-mypage">마이페이지</a>
+        <a href="/users/logout" class="auth-button">로그아웃</a>
         </span>
                 <span th:if="${username == null}">
         <a class="login-message">로그인을 해주세요</a>
-        <a href="/users/signup" class="auth-button">SignUp</a>
-        <a href="/users/login" class="auth-button">Log In</a>
+        <a href="/users/signup" class="auth-button">회원가입</a>
+        <a href="/users/login" class="auth-button">로그인</a>
     </span>
             </li>
         </ul>
@@ -89,18 +90,25 @@
         <img src="/images/img3.png" alt="Image 3" class="img-item hidden">
     </div>
 
-    <!-- 여행 문구와 버튼 (로그인 여부에 따라 표시) -->
-    <div th:if="${username != null}" class="travel-container">
-        <h2>모두누리와 여행을 떠나 보세요</h2> <!-- 문구 수정 해주세요 -->
-    </div>
-    <div th:if="${username == null}" class="travel-container"> <!-- 'hidden' 클래스 제거 -->
+    <!-- 새로운 컨테이너: 여행 문구와 버튼 -->
+    <div class="travel-container hidden">
+    <span th:if="${username != null}">
+        <h2>모두누리와 함께 여행을 떠날 준비가 되셨나요?</h2>
+        <div class="button-container">
+            <a href="/touristSpot/area-search" class="action-button">지역 별 검색</a>
+            <a href="/touristSpot/search-by-accessibility" class="action-button">무장애 관광 정보 검색</a>
+            <a href="/touristSpot/map" class="action-button">지도 보기</a>
+            <a href="/touristSpot/Travelplan" class="action-button">여행 계획하기</a>
+            <a href="/users/mypage" class="action-button">마이페이지</a>
+        </div>
+    </span>
+        <span th:if="${username == null}">
         <h2>모두누리와 여행을 함께하고 싶으시다면</h2>
         <div class="button-container">
-            <a href="/users/signup" class="auth-button">SignUp</a>
-            <a href="/users/login" class="auth-button">Log In</a>
+            <a href="/users/signup" class="action-button">회원가입 하러 가기</a>
         </div>
+    </span>
     </div>
-</main>
 
 <!-- Footer Section -->
 <footer class="footer">
@@ -114,5 +122,7 @@
 
 
 <script src="/static/script/script.js"></script>
+
+
 </body>
 </html>

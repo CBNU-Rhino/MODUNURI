@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MODUNURI</title>
+    <link rel="icon" href="/images/Favicon.png" type="image/png"> <!-- 이미지 경로를 수정하세요 -->
+    <title>지역 검색</title>
     <link rel="stylesheet" href="/css/Area_Search.css">
-
 </head>
 <body>
-
 <!-- Header Section -->
 <header class="navbar">
     <div class="logo">
@@ -22,20 +21,20 @@
         <ul class="nav-links">
             <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
             <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
-            <li><a href="/touristSpot/map" id="community-link">지도 보기</a></li>
+            <li><a href="/touristSpot/map">지도 보기</a></li>
             <li><a href="/touristSpot/travelplan">여행 기록하기</a></li>
-            <li><a href="/community">커뮤니티</a></li>
+            <li><a href="/community" id="community-link">커뮤니티</a></li>
             <!-- 로그인 상태 확인 -->
             <li class="nav-item-right">
         <span th:if="${username != null}">
         <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
-        <a href="/users/mypage" class="auth-button">MyPage</a>
-        <a href="/users/logout" class="auth-button">Logout</a>
+        <a href="/users/mypage" class="auth-mypage">마이페이지</a>
+        <a href="/users/logout" class="auth-button">로그아웃</a>
         </span>
                 <span th:if="${username == null}">
         <a class="login-message">로그인을 해주세요</a>
-        <a href="/users/signup" class="auth-button">SignUp</a>
-        <a href="/users/login" class="auth-button">Log In</a>
+        <a href="/users/signup" class="auth-button">회원가입</a>
+        <a href="/users/login" class="auth-button">로그인</a>
     </span>
             </li>
         </ul>
@@ -79,25 +78,39 @@
 
     <!-- 체크박스 추가된 부분 (콘텐츠 타입 필터링) -->
     <div class="checkbox-container">
-        <label><input type="radio"  name="category" value="12"> 관광지</label>
-        <label><input type="radio"  name="category" value="14"> 문화시설</label>
-        <label><input type="radio"  name="category" value="15"> 축제공연행사</label>
-        <label><input type="radio"  name="category" value="25"> 여행코스</label>
-        <label><input type="radio"  name="category" value="28"> 레포츠</label>
-        <label><input type="radio"  name="category" value="32"> 숙박</label>
-        <label><input type="radio"  name="category" value="38"> 쇼핑</label>
-        <label><input type="radio" name="category" value="39"> 음식점</label>
+        <label class="custom-radio">
+            <input type="radio" name="category" value="12">
+            <span class="radio-btn">관광지</span>
+        </label>
+        <label class="custom-radio">
+            <input type="radio" name="category" value="14">
+            <span class="radio-btn">문화시설</span>
+        </label>
+        <label class="custom-radio">
+            <input type="radio" name="category" value="28">
+            <span class="radio-btn">레포츠</span>
+        </label>
+        <label class="custom-radio">
+            <input type="radio" name="category" value="32">
+            <span class="radio-btn">숙박</span>
+        </label>
+        <label class="custom-radio">
+            <input type="radio" name="category" value="38">
+            <span class="radio-btn">쇼핑</span>
+        </label>
+        <label class="custom-radio">
+            <input type="radio" name="category" value="39">
+            <span class="radio-btn">음식점</span>
+        </label>
     </div>
 
     <!-- 검색 및 초기화 버튼 -->
-    <div class="search-bar">
-        <input type="text" placeholder="검색">
-        <button onclick="searchItems()">
-            <img src="../../static/images/search-icon.png" alt="검색 버튼" style="width: 20px; height: 20px;">
-        </button>
+    <div class="search-btn">
+        <button class="search-btn">검색</button>
     </div>
+
     <div class="selected-area">
-        <button onclick="resetFilters()">초기화</button>
+        <button class="reset-btn">초기화</button>
     </div>
 
     <!-- 결과를 보여줄 갤러리 -->

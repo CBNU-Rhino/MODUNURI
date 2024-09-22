@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In</title>
+    <link rel="icon" href="/images/Favicon.png" type="image/png"> <!-- 이미지 경로를 수정하세요 -->
+    <title>로그인</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
@@ -11,8 +12,8 @@
 <header class="navbar">
     <div class="logo">
         <a href="/"> <!-- 로고 클릭 시 index.html로 이동 -->
-            <img src="/images/MODUNURI.png"> <!-- 이미지 추가 -->
-            MODUNURI
+            <img src="/images/MODUNURI.png" class="logo img"> <!-- 이미지 추가 -->
+            <span class="a">MODUNURI</span>
         </a>
     </div>
 
@@ -21,19 +22,20 @@
             <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
             <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
             <li><a href="/touristSpot/map">지도 보기</a></li>
-            <li><a href="#">여행 기록하기</a></li>
-            <li><a href="/community">커뮤니티</a></li>
+            <li><a href="/touristSpot/travelplan">여행 기록하기</a></li>
+            <li><a href="/community" id="community-link">커뮤니티</a></li>
             <!-- 로그인 상태 확인 -->
             <li class="nav-item-right">
-                <span th:if="${username != null}">
-                    <a href="/users/mypage" class="my-page-button">My Page</a> <!-- My Page 버튼 추가 -->
-                    <a th:text="${username} + '님 안녕하세요'"></a>
-                    <a href="/users/logout" class="auth-button">Logout</a>
-                </span>
+        <span th:if="${username != null}">
+        <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
+        <a href="/users/mypage" class="auth-mypage">마이페이지</a>
+        <a href="/users/logout" class="auth-button">로그아웃</a>
+        </span>
                 <span th:if="${username == null}">
-                    <a href="/users/signup" class="auth-button">Sign Up</a>
-                    <a href="/users/login" class="auth-button">Log In</a> <!-- Log In 버튼 추가 -->
-                </span>
+        <a class="login-message">로그인을 해주세요</a>
+        <a href="/users/signup" class="auth-button">회원가입</a>
+        <a href="/users/login" class="auth-button">로그인</a>
+    </span>
             </li>
         </ul>
     </nav>
@@ -73,13 +75,12 @@
 <footer class="footer">
     <div class="footer-links">
         <ul>
-            <li><a href="#">Find a Store</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Use</a></li>
+            <li><p>&copy; 2024 MODUNURI</p></li>
+
         </ul>
     </div>
 </footer>
-<script src="/static/script/script.js"></script>
+
+<script src="/script/script.js"></script>
 </body>
 </html>

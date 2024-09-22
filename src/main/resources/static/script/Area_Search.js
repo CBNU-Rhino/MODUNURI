@@ -200,7 +200,7 @@ function resetFilters() {
     pagination.innerHTML = ''; // 페이지네이션 초기화
 }
 
-document.querySelector('.search-bar button').addEventListener('click', function() {
+document.querySelector('.search-btn').addEventListener('click', function() {
     document.getElementById('gallery').style.display = 'grid';
     searchItems();
 });
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 검색 수행 시 localStorage에 값 저장
-    document.querySelector('.search-bar button').addEventListener('click', function () {
+    document.querySelector('.search-btn').addEventListener('click', function () {
         const region = document.getElementById('region').value;
         const sido = document.getElementById('sido').value;
         const category = document.querySelector('input[name="category"]:checked').value;
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 검색 필터 초기화 시 localStorage도 초기화
-    document.querySelector('.reset-button').addEventListener('click', function () {
+    document.querySelector('.reset-btn').addEventListener('click', function () {
         localStorage.removeItem('region');
         localStorage.removeItem('sido');
         localStorage.removeItem('category');

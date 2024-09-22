@@ -41,7 +41,7 @@ html, body {
     font-size: 24px;
     font-weight: 900;
     text-decoration: none;
-
+    margin-top: 5px;
 }
 
 .nav-links {
@@ -69,7 +69,7 @@ html, body {
     text-decoration: underline; /* 호버 시 밑줄 추가 */
     font-weight: bold; /* 호버 시 글씨 굵게 */
     color: #45a049; /* 호버 시 글씨 색 변경 */
-    font-size: 18px; /* 호버 시 글씨 크기 증가 */
+    font-size: 17px; /* 호버 시 글씨 크기 증가 */
 }
 
 .login-message {
@@ -95,8 +95,8 @@ html, body {
 /* 공통 버튼 스타일 */
 .auth-button {
     padding: 10px 20px;
-    background-color: rgba(148, 205, 147, 0.25);
-    color: #4CAF50 !important;
+    background-color: #89B873;
+    color: #F5FFF5 !important;
     text-decoration: none;
     border-radius: 10px;
     display: inline-block;
@@ -105,12 +105,31 @@ html, body {
     width: 100px; /* 동일한 너비 설정 */
     box-sizing: border-box;
     margin-left: 5px; /* 버튼 간격 조정 */
-    border: 2px solid #4CAF50; /* 초록색 테두리 */
 }
 
 .auth-button:hover {
-    background-color: #45a049;
+    background-color: #739c61;
     color: #F5FFF5 !important;
+}
+
+.auth-mypage {
+    padding: 10px 20px;
+    background-color: #89B873;
+    color: #F5FFF5 !important;
+    text-decoration: none;
+    border-radius: 10px;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    width: 110px; /* 동일한 너비 설정 */
+    box-sizing: border-box;
+    margin-left: 5px; /* 버튼 간격 조정 */
+}
+
+.auth-mypage:hover {
+    background-color: #739c61;
+    color: #F5FFF5 !important;
+    font-size: 16px !important;
 }
 
 .nav-item-right {
@@ -394,6 +413,51 @@ html, body {
     border-radius: 10px;
 }
 
+.complete-container {
+    width: 70%;
+    margin: 100px auto; /* 수평 중앙 정렬 */
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 400px; /* 최소 높이 설정 */
+
+    /* Flexbox 설정 추가 */
+    display: flex;
+    flex-direction: column; /* 자식 요소들을 세로로 배치 */
+    justify-content: center; /* 수직 중앙 정렬 */
+    align-items: center; /* 수평 중앙 정렬 */
+}
+
+.complete-container h1,
+.complete-container p {
+    text-align: center; /* 텍스트 자체도 가운데 정렬 */
+    margin-bottom: 20px;
+    /* justify-content, align-items는 불필요하므로 제거 */
+}
+
+.complete-button {
+    width: 200px;
+    box-sizing: border-box;
+    padding: 10px;
+    background-color: #89B873;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center; /* 버튼 안의 텍스트 중앙 정렬 */
+    /* Flexbox 사용 */
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    text-decoration: none; /* 링크의 밑줄 제거 */
+}
+
+.complete-button:hover {
+    background-color: #739c61;
+    text-decoration: none; /* 링크의 밑줄 제거 */
+}
+
 /* 공통 스타일 */
 .signup-container h1, .login-container h1 {
     text-align: center;
@@ -418,7 +482,7 @@ html, body {
     width: 100%;
     box-sizing: border-box;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #89B873;
     color: white;
     border: none;
     border-radius: 5px;
@@ -426,7 +490,7 @@ html, body {
 }
 
 .signup-button:hover, .login-button:hover {
-    background-color: #45a049;
+    background-color: #739c61;
 }
 
 /* Link to Login/Signup */
@@ -443,7 +507,7 @@ html, body {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #89B873;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -452,7 +516,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #739c61;
 }
 
 
@@ -523,6 +587,7 @@ button:hover {
 
 .action-button:hover {
     background-color: #45a049;
+    color: #F5FFF5 !important;
 }
 
 /* 버튼 컨테이너를 상하로 정렬 */

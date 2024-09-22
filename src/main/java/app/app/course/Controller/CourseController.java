@@ -2,6 +2,7 @@ package app.app.course.Controller;
 
 import app.app.course.ContentInfo;
 import app.app.course.Course;
+import app.app.course.DTO.CourseDTO;
 import app.app.course.Service.CourseService;
 import app.app.user.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -20,11 +22,7 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    // 유저별 코스 조회
-    @GetMapping
-    public List<Course> getUserCourses(@AuthenticationPrincipal CustomUserDetails user) {
-        return courseService.getUserCourses(user.getUser().getId());
-    }
+
 
     @PostMapping("/courses/add")
     public ResponseEntity<?> addCourse(
@@ -43,5 +41,13 @@ public class CourseController {
 
         return ResponseEntity.ok("관심 코스가 저장되었습니다.");
     }
+
+    // 유저별 코스 조회
+    @GetMapping("/courses/get")
+    public List<CourseDTO> getUserCourses(@AuthenticationPrincipal CustomUserDetails user) {
+        return courseService.getUserCourses(user.getUser().getId());
+    }
+
+
 
 }

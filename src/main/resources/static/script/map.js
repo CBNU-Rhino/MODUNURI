@@ -97,24 +97,17 @@ async function getCarDirection() {
     const REST_API_KEY = '9e7786142c02ceecc7551f66b0d94383';
     const url = 'https://apis-navi.kakaomobility.com/v1/directions';
 
-    // 일정 섹션에서 관광지 ID 순서대로 가져오기
-    const scheduleContainer = document.getElementById('schedule');
-    const schedulePlaceIds = Array.from(scheduleContainer.children)
-        .map(placeElement => placeElement.id.split('-')[1]); // place-1234 형식에서 1234 추출
-
-    if (schedulePlaceIds.length < 2) {
-        console.error("경로를 계산하려면 최소한 두 개의 장소가 필요합니다.");
+    const placeIds = Object.keys(scheduleRoutes);
+    if (placeIds.length < 2) {
+        console.error("At least two places are required to calculate the route.");
         return;
     }
 
     const fullLinePath = [];
 
-    for (let i = 0; i < schedulePlaceIds.length - 1; i++) {
-        const placeId1 = schedulePlaceIds[i];
-        const placeId2 = schedulePlaceIds[i + 1];
-
-        const origin = `${scheduleRoutes[placeId1].getLng()},${scheduleRoutes[placeId1].getLat()}`;
-        const destination = `${scheduleRoutes[placeId2].getLng()},${scheduleRoutes[placeId2].getLat()}`;
+    for (let i = 0; i < placeIds.length - 1; i++) {
+        const origin = `${scheduleRoutes[placeIds[i]].getLng()},${scheduleRoutes[placeIds[i]].getLat()}`;
+        const destination = `${scheduleRoutes[placeIds[i + 1]].getLng()},${scheduleRoutes[placeIds[i + 1]].getLat()}`;
 
         const queryParams = new URLSearchParams({
             origin: origin,
@@ -135,12 +128,11 @@ async function getCarDirection() {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
             const data = await response.json();
 
-            // 경로의 좌표를 가져옴
             data.routes[0].sections[0].roads.forEach(road => {
                 road.vertexes.forEach((vertex, index) => {
                     if (index % 2 === 0) {
@@ -149,16 +141,14 @@ async function getCarDirection() {
                 });
             });
         } catch (error) {
-            console.error('오류 발생:', error);
+            console.error('Error:', error);
         }
     }
 
-    // 이전 경로 지우기
     if (currentPathPolyline) {
         currentPathPolyline.setMap(null);
     }
 
-    // 새로운 경로 그리기
     currentPathPolyline = new kakao.maps.Polyline({
         path: fullLinePath,
         strokeWeight: 5,
@@ -167,9 +157,8 @@ async function getCarDirection() {
         strokeStyle: 'solid'
     });
 
-    currentPathPolyline.setMap(map); // 지도에 경로 표시
+    currentPathPolyline.setMap(map); // 경로 지도에 표시
 }
-
 
 // 드래그 앤 드롭 기능
 function allowDrop(ev) {
@@ -313,8 +302,8 @@ function onDrop(event) {
         // 아래로 이동할 경우, targetElement 이후로 배치
         targetElement.after(selectedElement);
         moveElement(targetElement, selectedElement, "down");
-    } else {
         // 위로 이동할 경우, targetElement 이전으로 배치
+    } else {
         targetElement.before(selectedElement);
         moveElement(targetElement, selectedElement, "up");
     }
@@ -324,11 +313,11 @@ function onDrop(event) {
         selectedElement.classList.remove('dragging');
     });
 }
+
 function moveElement(targetElement, selectedElement, direction) {
     const targetElementTop = targetElement.getBoundingClientRect().top;
     const selectedElementTop = selectedElement.getBoundingClientRect().top;
     const distance = targetElementTop - selectedElementTop;
-
     if (direction === "down") {
         selectedElement.style.transform = `translateY(${distance}px)`;
         targetElement.style.transform = `translateY(${-distance}px)`;
@@ -336,14 +325,12 @@ function moveElement(targetElement, selectedElement, direction) {
         selectedElement.style.transform = `translateY(${distance}px)`;
         targetElement.style.transform = `translateY(${-distance}px)`;
     }
-
     // 일정 시간이 지나면 위치 고정
     setTimeout(() => {
         selectedElement.style.transform = '';
         targetElement.style.transform = '';
     }, 300);
 }
-
 
 function changePosition(targetElement) {
     if (!targetElement) {

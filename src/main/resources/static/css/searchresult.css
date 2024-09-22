@@ -1,3 +1,4 @@
+/* styles.css */
 
 @font-face {
     font-family: 'Pretendard';
@@ -19,7 +20,7 @@ html, body {
     display: flex;
     justify-content: space-between; /* 버튼을 오른쪽에 고정하기 위해 사용 */
     align-items: center;
-    background-color: #EFFFE9;
+    background-color: #F5FFF5;
     padding: 10px 20px;
     position: fixed;
     width: 100%;
@@ -40,7 +41,7 @@ html, body {
     font-size: 24px;
     font-weight: 900;
     text-decoration: none;
-
+    margin-top: 5px;
 }
 
 .nav-links {
@@ -68,7 +69,7 @@ html, body {
     text-decoration: underline; /* 호버 시 밑줄 추가 */
     font-weight: bold; /* 호버 시 글씨 굵게 */
     color: #45a049; /* 호버 시 글씨 색 변경 */
-    font-size: 18px; /* 호버 시 글씨 크기 증가 */
+    font-size: 17px; /* 호버 시 글씨 크기 증가 */
 }
 
 .login-message {
@@ -77,7 +78,6 @@ html, body {
     margin-left: 40px;
     margin-right: 15px; /* 로그인 메시지와 회원가입 버튼 사이 간격 */
 }
-
 
 .nav-item {
     color: #fff;
@@ -95,8 +95,8 @@ html, body {
 /* 공통 버튼 스타일 */
 .auth-button {
     padding: 10px 20px;
-    background-color: rgba(148, 205, 147, 0.25);
-    color: #4CAF50 !important;
+    background-color: #89B873;
+    color: #F5FFF5 !important;
     text-decoration: none;
     border-radius: 10px;
     display: inline-block;
@@ -105,12 +105,31 @@ html, body {
     width: 100px; /* 동일한 너비 설정 */
     box-sizing: border-box;
     margin-left: 5px; /* 버튼 간격 조정 */
-    border: 2px solid #4CAF50; /* 초록색 테두리 */
 }
 
 .auth-button:hover {
-    background-color: #45a049;
+    background-color: #739c61;
     color: #F5FFF5 !important;
+}
+
+.auth-mypage {
+    padding: 10px 20px;
+    background-color: #89B873;
+    color: #F5FFF5 !important;
+    text-decoration: none;
+    border-radius: 10px;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    width: 110px; /* 동일한 너비 설정 */
+    box-sizing: border-box;
+    margin-left: 5px; /* 버튼 간격 조정 */
+}
+
+.auth-mypage:hover {
+    background-color: #739c61;
+    color: #F5FFF5 !important;
+    font-size: 16px !important;
 }
 
 .nav-item-right {
@@ -121,7 +140,7 @@ html, body {
 .main-container {
     flex: 1;
     width: 85%;
-    background-color: #e1fbdf;
+    background-color: white;
     padding: 20px;
     margin-top: 80px;
     border-radius: 10px;
@@ -163,7 +182,7 @@ html, body {
 .place-img {
     width: 100%; /* 섹션의 가로 너비에 맞춤 */
     max-width: 650px; /* 가로 크기를 고정 (원하는 크기로 설정) */
-    height: 450px; /* 기존보다 약간 줄어든 높이 */
+    height: 520px; /* 기존보다 약간 줄어든 높이 */
     object-fit: cover; /* 이미지 비율을 유지하며 고정된 크기에 맞춤 */
     border-radius: 10px;
     margin-left: 20px;
@@ -187,6 +206,8 @@ html, body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
     margin-left: 50px;
+    width: 580px;
+    height: 40px;
 
 }
 
@@ -204,7 +225,7 @@ html, body {
     padding: 20px;
     border-radius: 10px;
     background-color: rgba(148, 205, 147, 0.25);
-    height: 470px; /* 이미지 섹션과 일관된 높이로 줄임 */
+    height: 530px; /* 이미지 섹션과 일관된 높이로 줄임 */
     margin-right: 20px;
 }
 
@@ -317,8 +338,10 @@ html, body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 다른 블록과 동일한 그림자 */
     margin-bottom: 20px;
-    display: block; /* 숨겨진 섹션이 없도록 명시적으로 표시 */
+    display: block;
     visibility: visible; /* 숨겨진 요소가 없도록 설정 */
+    overflow: visible; /* 자식 요소가 넘치지 않게 기본값을 유지 */
+    height: auto; /* 자식 요소의 크기에 따라 부모 요소가 늘어나게 설정 */
 }
 
 /* 블로그 포스팅 섹션 */
@@ -328,51 +351,56 @@ html, body {
     color: #4CAF50;      /* 색상을 통일된 그린 컬러로 지정 */
     margin-bottom: 10px; /* 아래쪽 여백을 조절 */
 }
-/* 블로그 포스트 카드 스타일 */
+
+.blog-posts-block::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* 블로그 포스트 그리드 컨테이너 */
+#blog-posts {
+    display: grid; /* 그리드 레이아웃 사용 */
+    grid-template-columns: repeat(5, 1fr); /* 한 줄에 5개의 카드 */
+    grid-auto-rows: minmax(100px, auto); /* 각 행의 최소 높이를 설정하고, 내용에 따라 높이가 늘어나게 함 */
+    row-gap: 30px; /* 위아래 간격 */
+    column-gap: 20px; /* 좌우 간격 */
+    padding: 0;
+    list-style: none;
+    margin: 0;
+}
+
+/* 블로그 카드 스타일 */
 .blog-card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: #F3F8E6; /* 카드 배경 */
+    background-color: #F3F8E6; /* 카드 배경색 */
     border: 2px solid #BCC7A3;
     border-radius: 10px;
     padding: 15px;
-    margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 카드 그림자 */
-    transition: box-shadow 0.3s ease, transform 0.3s ease; /* 마우스 오버 시 효과 */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* 호버 효과 */
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+    display: flex;
+    flex-direction: column; /* 세로로 쌓이는 구조 */
+    height: 85%; /* 카드 높이를 동일하게 맞추기 */
 }
 
 .blog-card:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 효과 */
-    transform: translateY(-5px); /* 카드가 살짝 위로 올라가는 효과 */
+    transform: translateY(-5px); /* 호버 시 카드가 살짝 올라가는 효과 */
 }
 
 /* 블로그 링크 */
 .blog-link {
     text-decoration: none;
     color: inherit;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-/* 썸네일 이미지 */
-.blog-thumbnail {
-    width: 100px; /* 썸네일 크기 */
-    height: 100px;
-    margin-right: 15px; /* 썸네일과 텍스트 사이 간격 */
-}
-
-.blog-thumbnail img {
-    width: 100%; /* 썸네일 이미지를 컨테이너 크기에 맞춤 */
+    display: block;
+    width: 100%;
     height: 100%;
-    object-fit: cover; /* 이미지 비율 유지하면서 크기 맞추기 */
-    border-radius: 8px; /* 썸네일 이미지에 약간의 둥근 모서리 */
 }
 
 /* 블로그 내용 */
 .blog-content {
-    flex: 1; /* 텍스트 컨텐츠가 남은 공간을 채우도록 설정 */
+    padding-top: 10px;
 }
 
 .blog-title {
@@ -391,9 +419,8 @@ html, body {
     font-size: 14px;
     color: #717171;
     line-height: 1.6;
+    margin-top: 10px;
 }
-
-
 
 /* Footer */
 .footer {

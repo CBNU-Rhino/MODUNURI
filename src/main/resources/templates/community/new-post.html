@@ -3,24 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/Favicon.png" type="image/png"> <!-- 이미지 경로를 수정하세요 -->
     <title>Create or Edit Post</title>
-    <link rel="stylesheet" href="/static/css/styles.css"> <!-- 수정된 경로 -->
+    <link rel="stylesheet" href="/css/community.css"> <!-- 수정된 경로 -->
 </head>
 <body>
 <!-- Header Section -->
 <header class="navbar">
     <div class="logo">
-        <a href="/">
-            <img src="../static/images/MODUNURI.png"> <!-- 수정된 이미지 경로 -->
-            <span style="color: #89B873; font-size: 24px; font-weight: 900;">MODUNURI</span>
+        <a href="/"> <!-- 로고 클릭 시 index.html로 이동 -->
+            <img src="/images/MODUNURI.png" class="logo img"> <!-- 이미지 추가 -->
+            <span class="a">MODUNURI</span>
         </a>
     </div>
+
     <nav>
         <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="#">Travel Tips</a></li>
-            <li><a href="/community" class="active">Community</a></li>
-            <li><a href="#">Support Center</a></li>
+            <li><a href="/touristSpot/area-search">지역 별 검색</a></li>
+            <li><a href="/touristSpot/search-by-accessibility">무장애 정보 검색</a></li>
+            <li><a href="/touristSpot/map">지도 보기</a></li>
+            <li><a href="/touristSpot/travelplan">여행 기록하기</a></li>
+            <li><a href="/community" id="community-link">커뮤니티</a></li>
+            <!-- 로그인 상태 확인 -->
+            <li class="nav-item-right">
+        <span th:if="${username != null}">
+        <a class="login-message" th:text="${username} + '님 안녕하세요'"></a>
+        <a href="/users/mypage" class="auth-mypage">마이페이지</a>
+        <a href="/users/logout" class="auth-button">로그아웃</a>
+        </span>
+                <span th:if="${username == null}">
+        <a class="login-message">로그인을 해주세요</a>
+        <a href="/users/signup" class="auth-button">회원가입</a>
+        <a href="/users/login" class="auth-button">로그인</a>
+    </span>
+            </li>
         </ul>
     </nav>
 </header>
@@ -28,28 +44,29 @@
 <!-- Main Content Section -->
 <main style="margin-top: 100px;">
     <section class="board-section">
-        <h1 id="form-title" style="text-align: center; padding: 20px 0; color: #656565;">Create New Post</h1>
+        <h1 id="form-title" style="text-align: center; padding: 20px 0; color: #656565;">새 글 작성하기</h1>
         <!-- 게시물 작성/수정 폼 -->
         <form id="new-post-form">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required>
+            <label for="title" class="form-label">제목:</label>
+            <input type="text" id="title" name="title" class="title-input" required>
 
-            <label for="content">Content:</label>
-            <textarea id="content" name="content" rows="5" required></textarea>
+            <label for="content" class="form-label">내용:</label>
+            <textarea id="content" name="content" class="content-input" required></textarea>
 
-            <button type="submit" id="submit-button" style="background-color: #89B873; color: white; padding: 10px 20px;">Submit</button>
+            <button type="submit" id="submit-button" class="submit-button">작성</button>
         </form>
     </section>
 </main>
+
+<!-- 빈 공간을 확보하기 위한 컨테이너 -->
+<div class="footer-space"></div>
 
 <!-- Footer Section -->
 <footer class="footer">
     <div class="footer-links">
         <ul>
-            <li><a href="#">Find a Store</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Use</a></li>
+            <li><p>&copy; 2024 MODUNURI</p></li>
+
         </ul>
     </div>
 </footer>

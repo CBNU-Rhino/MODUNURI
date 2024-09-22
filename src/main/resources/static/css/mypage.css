@@ -1,3 +1,4 @@
+/* styles.css */
 
 @font-face {
     font-family: 'Pretendard';
@@ -40,7 +41,7 @@ html, body {
     font-size: 24px;
     font-weight: 900;
     text-decoration: none;
-
+    margin-top: 5px;
 }
 
 .nav-links {
@@ -68,7 +69,7 @@ html, body {
     text-decoration: underline; /* 호버 시 밑줄 추가 */
     font-weight: bold; /* 호버 시 글씨 굵게 */
     color: #45a049; /* 호버 시 글씨 색 변경 */
-    font-size: 18px; /* 호버 시 글씨 크기 증가 */
+    font-size: 17px; /* 호버 시 글씨 크기 증가 */
 }
 
 .login-message {
@@ -78,11 +79,26 @@ html, body {
     margin-right: 15px; /* 로그인 메시지와 회원가입 버튼 사이 간격 */
 }
 
+.nav-item {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+    background-color: #555;
+}
+
 /* 공통 버튼 스타일 */
 .auth-button {
+    border: none !important; /* 기존에 설정된 border를 없앰 */
+    box-shadow: none !important; /* box-shadow를 없앰 */
     padding: 10px 20px;
-    background-color: rgba(148, 205, 147, 0.25);
-    color: #4CAF50 !important;
+    background-color: #89B873;
+    color: #F5FFF5 !important;
     text-decoration: none;
     border-radius: 10px;
     display: inline-block;
@@ -91,18 +107,37 @@ html, body {
     width: 100px; /* 동일한 너비 설정 */
     box-sizing: border-box;
     margin-left: 5px; /* 버튼 간격 조정 */
-    border: 2px solid #4CAF50; /* 초록색 테두리 */
+
 }
 
 .auth-button:hover {
-    background-color: #45a049;
+    background-color: #739c61;
     color: #F5FFF5 !important;
+}
+
+.auth-mypage {
+    padding: 10px 20px;
+    background-color: #89B873;
+    color: #F5FFF5 !important;
+    text-decoration: none;
+    border-radius: 10px;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    width: 110px; /* 동일한 너비 설정 */
+    box-sizing: border-box;
+    margin-left: 5px; /* 버튼 간격 조정 */
+}
+
+.auth-mypage:hover {
+    background-color: #739c61;
+    color: #F5FFF5 !important;
+    font-size: 16px !important;
 }
 
 .nav-item-right {
     margin-left: auto; /* 오른쪽으로 밀어내기 */
 }
-
 
 /* Main Container */
 .main-container {
@@ -117,7 +152,7 @@ html, body {
 
 /* 블록 섹션 공통 스타일 */
 .block {
-    background-color: #F3F8E6;
+    background-color: #f9f9f9;
     margin-bottom: 20px;
     padding: 20px;
     border-radius: 10px;
@@ -254,6 +289,10 @@ html, body {
     background-color: #45a049;
 }
 
+/* 푸터 위에 빈 공간 확보 */
+.footer-space {
+    height: 200px; /* 원하는 높이로 빈 공간 확보 */
+}
 
 /* Footer */
 
@@ -295,4 +334,61 @@ html, body {
 
 .footer-links a:hover {
     text-decoration: underline;
+}
+
+.course-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.course-box:hover {
+    background-color: #e0e0e0;
+}
+
+.course-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.remove-button {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.remove-button:hover {
+    background-color: #ff1a1a;
+}
+
+.modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4); /* 반투명 배경 */
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    width: 80%;
+    border-radius: 10px;
+}
+
+.close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
 }
