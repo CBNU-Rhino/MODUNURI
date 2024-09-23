@@ -11,33 +11,15 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/app?serverTimezone=UTC&characterEncoding=utf8
-    username: root
-    password: 1234
+    url: jdbc:mysql://database-1.cfgs08my6pk6.ap-northeast-2.rds.amazonaws.com:3306/db1?serverTimezone=UTC&characterEncoding=utf8
+    username: admin
+    password: chungbuk
 
   jpa:
     hibernate:
       ddl-auto: update
       dialect: org.hibernate.dialect.MySQL8Dialect  # RDS가 MySQL 8.x일 경우
     show-sql: true
-
-  #  thymeleaf:
-  #    prefix: classpath:/templates/
-  #    suffix: .html
-  #    mode: HTML5
-  #
-  #  datasource:
-  #    driver-class-name: com.mysql.cj.jdbc.Driver
-  #    url: jdbc:mysql://localhost:3306/app?serverTimezone=UTC&characterEncoding=utf8
-  #
-  #    username: root
-  #    password: 1234
-  #  jpa:
-  #    hibernate:
-  #      ddl-auto: update
-  #    properties:
-  #      hibernate.dialect: org.hibernate.dialect.MySQLDialect
-  #    show-sql: true
 
   kakao:
     client_id: 9e7786142c02ceecc7551f66b0d94383
