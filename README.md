@@ -25,3 +25,9 @@
 
 ## 5. Deployment
 - ![Elastic Beanstalk](https://img.shields.io/badge/-Elastic%20Beanstalk-232F3E?logo=amazon-aws&logoColor=white)
+
+
+# 주요 기능
+
+## 1. 지역별 관광지 검색
+ 지역별 관광지, 문화시설, 레포츠, 숙박, 쇼핑, 음식점의 목록 확인 가능 
