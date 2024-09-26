@@ -105,6 +105,13 @@ function initializeSortable() {
                 })
                 .catch(error => console.error("Error fetching tourist information:", error));
         },
+        onRemove: function (evt) { // 일정 컨테이너에서 항목이 제거될 때 발생
+            const placeId = evt.item.id.split('-')[1]; // 관광지 ID 추출
+            console.log('Element removed from schedule', placeId);
+
+            // 일정 목록에서 제거되면 마커 삭제
+            removeMarker(placeId);
+        },
         onEnd: function (evt) {
             console.log('Element position changed within schedule', evt.item); // 일정 내에서 위치가 변경된 경우
         }
@@ -112,20 +119,10 @@ function initializeSortable() {
 }
 
 
-// 마커 및 경로 추가 함수
-function addMarkerAndRouteAfterDrop(placeId) {
-    // 관광지가 일정에 추가되면 마커와 경로 추가
-    fetch(`/touristSpot/Json/tourist-information?contentId=${placeId}&contentTypeId=${favoritePlaces[placeId]}`)
-        .then(response => response.json())
-        .then(data => {
-            addMarkerAndRoute(data.touristDetail); // 마커 및 경로 추가
-            const coords = new kakao.maps.LatLng(data.touristDetail.mapy, data.touristDetail.mapx);
-            map.setCenter(coords); // 지도 중심을 해당 관광지의 좌표로 이동
-        })
-        .catch(error => console.error("Error fetching tourist information:", error));
-}
+// 오버레이를 저장할 객체 추가
+var overlays = {}; // 지도 위에 표시할 오버레이들을 저장할 객체, 관광지 ID로 관리
 
-// 마커 추가 및 경로 그리기
+// 마커 및 경로 추가 함수
 function addMarkerAndRoute(touristDetail) {
     // 관광지의 좌표 (위도와 경도)를 가져옴
     const coords = new kakao.maps.LatLng(touristDetail.mapy, touristDetail.mapx);
@@ -152,9 +149,10 @@ function addMarkerAndRoute(touristDetail) {
         map: map,  // 커스텀 오버레이를 표시할 지도 객체
     });
 
-    // 경로와 마커 정보를 scheduleRoutes 및 markers 객체에 ID를 키로 저장
+    // 경로와 마커, 오버레이 정보를 scheduleRoutes, markers, overlays 객체에 저장
     scheduleRoutes[placeId] = coords;  // 경로 정보 저장 (관광지 좌표)
     markers[placeId] = marker;  // 마커 정보 저장
+    overlays[placeId] = customOverlay;  // 오버레이 정보 저장
 
     // 마커를 클릭했을 때 실행되는 이벤트 리스너 추가 (관광지 상세 모달 표시)
     kakao.maps.event.addListener(marker, 'click', function() {
@@ -162,13 +160,22 @@ function addMarkerAndRoute(touristDetail) {
     });
 }
 
-// 마커 제거 함수
+// 마커 및 오버레이 제거 함수
 function removeMarker(placeId) {
-    if (markers[placeId]) { // 해당 ID에 대한 마커가 존재하는지 확인
+    // 마커가 존재하면 지도에서 제거
+    if (markers[placeId]) {
         markers[placeId].setMap(null); // 지도에서 마커 제거
         delete markers[placeId]; // 마커 객체에서 삭제
-        delete scheduleRoutes[placeId]; // 경로 객체에서도 삭제
     }
+
+    // 오버레이가 존재하면 지도에서 제거
+    if (overlays[placeId]) {
+        overlays[placeId].setMap(null); // 지도에서 오버레이 제거
+        delete overlays[placeId]; // 오버레이 객체에서 삭제
+    }
+
+    // 경로 정보도 삭제
+    delete scheduleRoutes[placeId];
 }
 
 // 자동차 경로를 가져오는 함수 (카카오 내비 API 사용)
