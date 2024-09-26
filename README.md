@@ -43,3 +43,7 @@
 
 ![관광지 검색 결과](https://github.com/yangwoohyeon/image/blob/main/SearchResult.png)
 
+## 3. 무장애 관광지 검색
+ - 휠체어 대여, 유아차 대여, 엘리베이터, 장애인 주차구역, 점자블록, 안내견동반 가능여부, 시각 장애인 편의시설 중 선택하여 선택된 편의 기능이 있는 관광지 목록을 필터링하여 볼 수 있도록 함
+![관광지 검색 결과](https://github.com/yangwoohyeon/image/blob/main/BarrierSearch.png)
+
