@@ -31,3 +31,9 @@
 
 ## 1. 지역별 관광지 검색
  지역별 관광지, 문화시설, 레포츠, 숙박, 쇼핑, 음식점의 목록 확인 가능 
+
+![관광지 검색](https://github.com/yangwoohyeon/image/blob/main/region.png)
+
+## 2. 관광지 상세정보 페이지
+
+
