@@ -51,11 +51,7 @@
  - 관심 관광지로 저장한 관광지들을 자신의 일정에 맞게 수정하고 관광지들을 경유하는 경로를 지도에서 확인 가능
 ![관광지 검색 결과](https://github.com/yangwoohyeon/image/blob/main/map2.png)
 
-## 4. 저장한 장소 보기
- - 관심 관광지로 저장한 관광지들을 자신의 일정에 맞게 수정하고 관광지들을 경유하는 경로를 지도에서 확인 가능
-![관광지 검색 결과](https://github.com/yangwoohyeon/image/blob/main/map2.png)
-
-## 4. 여행 계획하기
+## 5. 여행 계획하기
  - 지역 선택후 자신에게 해당하는 무장애 정보를 선택하면 그에 맞는 관광지를 추천, 사용자는 여러 관광지를 선택하여 코스로 저장 가능
 ![관광지 검색 결과](https://github.com/yangwoohyeon/image/blob/main/%EC%97%AC%ED%96%89-%EA%B3%84%ED%9A%8D%ED%95%98%EA%B8%B0-Chrome-2024-09-27-13-22-25.gif)
 
